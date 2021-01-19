@@ -11,7 +11,7 @@
         android:label="search_screen_fragment"
         tools:layout="@layout/search_screen_fragment" >
         <action
-            android:id="@+id/action_searchScreenFragment_to_routeListScreenFragment"
+            android:id="@+id/action_searchScreen_to_routeListScreen"
             app:destination="@id/routeListScreenFragment" />
     </fragment>
     <fragment

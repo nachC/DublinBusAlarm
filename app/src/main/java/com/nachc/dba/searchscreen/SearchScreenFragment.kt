@@ -13,11 +13,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.Toast
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.nachc.dba.R
 import com.nachc.dba.databinding.SearchScreenFragmentBinding
 
@@ -26,10 +28,6 @@ class SearchScreenFragment : Fragment() {
     /**
      * TODO:
      * */
-
-    companion object {
-        fun newInstance() = SearchScreenFragment()
-    }
 
     // tag for logging
     val TAG: String = "SearchScreenFragment"
@@ -40,13 +38,37 @@ class SearchScreenFragment : Fragment() {
     // binding reference
     private lateinit var binding: SearchScreenFragmentBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    // Observer to be aware of loading process
+    private val loadingObserver = Observer<Boolean> { isLoading ->
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        if (isLoading) {
+            binding.routeError.visibility = View.GONE
+        }
+    }
+    // Observer to be aware of any error from the backend
+    private val errorObserver = Observer<Boolean> { isError ->
+        binding.routeError.visibility = if (isError) View.VISIBLE else View.GONE
+    }
+    // Observer to be aware of input validation results
+    // as this is the first thing to check, we'll hide the keyboard here
+    private val validInputObserver = Observer<Pair<Boolean, String>> { isValidInput ->
+        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.inputLineEditText.windowToken, 0)
+        if (!isValidInput.first) {
+            // input is not valid, show respective error
+            binding.inputLineEditText.error = isValidInput.second
+        }
+    }
+
+    override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?,
+                                savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.search_screen_fragment, container, false
         )
+
+        // Set the viewmodel for databinding - this allows the bound layout access to all of the
+        // data in the VieWModel
+        binding.searchScreenViewModel = viewModel
 
         // Specify the current activity as the lifecycle owner of the binding. This is used so that
         // the binding can observe LiveData updates
@@ -55,52 +77,27 @@ class SearchScreenFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        /*****Click events*****/
-        binding.searchBtn.setOnClickListener {
-            Log.i(TAG, "button clicked")
-            // Hide the keyboard after clicking search
-            val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(binding.inputLineEditText.windowToken, 0)
-            // call the viewModel for validation on the user's input
-            viewModel.validateInput(binding.inputLineEditText.text.toString())
-        }
+        // request location permissions right away (note: quite invasive for the user)
+        requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), FINE_LOCATION)
+
         binding.permissionBtn.setOnClickListener {
             openPermissionSettings()
+        }
+        binding.allowLocationBtn.setOnClickListener {
+            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), FINE_LOCATION)
         }
         binding.dataSavedTextView.setOnClickListener {
             showDataSavedDialog()
         }
-        /*****End Click events*****/
 
-        viewModel.isValidInput.observe(viewLifecycleOwner, { isValidInput ->
-            if (!isValidInput.first) {
-                binding.inputLineEditText.error = isValidInput.second
-            } else {
-                searchRoute()
-            }
-        })
+        // start observing the ViewModel
+        viewModel.validInput.observe(viewLifecycleOwner, validInputObserver)
+        viewModel.loading.observe(viewLifecycleOwner, loadingObserver)
+        viewModel.loadError.observe(viewLifecycleOwner, errorObserver)
 
-        // observe news broadcast, will let us know if the route search was successful or not
-        viewModel.news.observe(viewLifecycleOwner, { goodNews ->
-            Log.i(TAG, "hey! we got an update from observable")
-            if (goodNews) {
-                Log.i(TAG, "good news")
-                Toast.makeText(this.context, "good news!", Toast.LENGTH_SHORT).show()
-                //findNavController().navigate(SearchScreenFragmentDirections.actionSearchScreenToRouteListScreen())
-            } else {
-                Log.i(TAG, "bad news")
-                Toast.makeText(this.context, "bad news!", Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
-
-    // request permissions. Will get called when search btn is pressed
-    private fun searchRoute() {
-        // request permission to use location -> result will be handled by onRequestPermissionsResult
-        requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), FINE_LOCATION)
     }
 
     // here we handle the result of calling requestPermissions
@@ -116,14 +113,18 @@ class SearchScreenFragment : Fragment() {
             // received request permission for fine-location
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // we have permission to use location -> we can search now
-                viewModel.search(binding.inputLineEditText.text.toString())
+                //viewModel.search(binding.inputLineEditText.text.toString())
             } else {
                 // we don't have location permission
-                Toast.makeText(this.context, "Permission was not granted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this.context, "Permission was not granted", Toast.LENGTH_SHORT).show()
                 // see if user checked "Don't ask again" box before, if so, show button to open OS Settings
                 if (!shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
                     Log.i(TAG, "redirect user to settings")
+                    binding.allowLocationBtn.visibility = View.GONE
                     binding.permissionBtn.visibility = View.VISIBLE
+                } else {
+                    binding.permissionBtn.visibility = View.GONE
+                    binding.allowLocationBtn.visibility = View.VISIBLE
                 }
             }
         } else {
@@ -148,7 +149,7 @@ class SearchScreenFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 0) {
             binding.permissionBtn.visibility = View.INVISIBLE
-            Toast.makeText(this.context, "You can search now", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.context, "You can search now", Toast.LENGTH_SHORT).show()
         }
     }
 

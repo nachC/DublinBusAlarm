@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_routeListScreenFragment_to_placeholder"
             app:destination="@id/placeholder" />
+        <action
+            android:id="@+id/actionRouteListToSearch"
+            app:destination="@id/searchScreenFragment" />
     </fragment>
     <fragment android:id="@+id/placeholder" />
 </navigation>

@@ -9,39 +9,43 @@ class SearchScreenViewModel : ViewModel() {
 
     /**
      * TODO:
+     *  - refactor Models, create FirebaseService and implement getRoute method
+     *  - DI with Dagger2
      * */
 
     private val TAG = "SearchScreenViewModel"
 
-    val routeID: MutableLiveData<String> = MutableLiveData()
-
-    // _goodNews is true if we were able to retrieve route data from the DB
-    // with LiveData we share our _goodNews with the observing Observers
-    private val _goodNews = MutableLiveData<Boolean>()
-    val news: LiveData<Boolean>
-        get() = _goodNews
-
-    private val _isValidInput = MutableLiveData<Pair<Boolean, String>>()
-    val isValidInput: LiveData<Pair<Boolean, String>>
-        get() = _isValidInput
+    val loading by lazy { MutableLiveData<Boolean>() }
+    val loadError by lazy { MutableLiveData<Boolean>() }
+    val validInput by lazy { MutableLiveData<Pair<Boolean, String>>() }
 
     // validate input
     // check for emptiness and regex match
-    // return a Pair(error: Boolean, errorMessage: String)
-    fun validateInput(input: String) {
+    // set validInput value to a Pair(error: Boolean, errorMessage: String)
+    private fun validateInput(input: String) {
+        loading.value = false
         if (input.isEmpty() || input.isBlank()) {
-            _isValidInput.value = Pair(false, "Enter a bus line")
+            validInput.value = Pair(false, "Enter a bus line")
         } else if (!input.matches("[a-zA-Z0-9 *]+$".toRegex())) {
-            _isValidInput.value = Pair(false, "Only letters & numbers")
+            validInput.value = Pair(false, "Only letters & numbers")
         } else {
-            _isValidInput.value = Pair(true, "Ok")
+            validInput.value = Pair(true, "Ok")
         }
     }
 
     // set goodNews value depending if route data was fetched (true) or not (false)
     // this is a placeholder until the repository is setup
     fun search(routeID: String) {
-        Log.i(TAG, routeID)
-        _goodNews.value = true
+        loading.value = true
+        validateInput(routeID)
+        validInput.value?.first.let {
+            Log.i(TAG, "input is valid, we can search")
+            getRoute(routeID)
+        }
+    }
+
+    // request route data from firebase service
+    private fun getRoute(routeID: String) {
+        Log.i(TAG, "searching getRoute")
     }
 }

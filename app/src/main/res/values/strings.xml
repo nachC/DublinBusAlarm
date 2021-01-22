@@ -1,11 +1,12 @@
 <resources>
     <string name="app_name">Dublin Bus Alarm</string>
 
-    <!-- MainActivity  -->
+    <!-- SearchScreen  -->
     <string name="inputLine">Enter Bus Line</string>
     <string name="inputLineHint">e.g. 66b</string>
     <string name="searchBtn">Search</string>
     <string name="dataSavedTextView">See here what data is saved</string>
+    <string name="routeError">An error occurred while searching the route</string>
 
     <!-- MapsActivity -->
     <string name="title_activity_maps">Map</string>
@@ -20,10 +21,10 @@
 
     <!-- Location Permissions -->
     <string name="permission_text">This app requires access to your location to work.</string>
-    <string name="settings_button">settings</string>
-    <string name="allow_button">allow</string>
+    <string name="settings_button">location settings</string>
+    <string name="allow_button">allow location</string>
 
-    <!-- RoutesActivity -->
+    <!-- RoutesList -->
     <string name="header_text">select a route</string>
 
     <!-- Error handling -->

@@ -2,16 +2,21 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    >
+    tools:context=".routelistscreen.RouteListScreenFragment">
+
+    <data>
+
+        <variable
+            name="routeListViewModel"
+            type="com.nachc.dba.routelistscreen.RouteListScreenViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/route_list_screen_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".routelistscreen.RouteListScreenFragment">
+        android:layout_height="match_parent">
 
-        <ListView
-            android:id="@+id/routesListView"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/routeList"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/colorPrimaryDark"
@@ -19,6 +24,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

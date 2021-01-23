@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.navigation.Navigation
 
 class SearchScreenViewModel : ViewModel() {
 
@@ -18,6 +19,7 @@ class SearchScreenViewModel : ViewModel() {
     val loading by lazy { MutableLiveData<Boolean>() }
     val loadError by lazy { MutableLiveData<Boolean>() }
     val validInput by lazy { MutableLiveData<Pair<Boolean, String>>() }
+    val routeFetched by lazy { MutableLiveData<Boolean>() }
 
     // validate input
     // check for emptiness and regex match
@@ -38,14 +40,17 @@ class SearchScreenViewModel : ViewModel() {
     fun search(routeID: String) {
         loading.value = true
         validateInput(routeID)
-        validInput.value?.first.let {
-            Log.i(TAG, "input is valid, we can search")
-            getRoute(routeID)
+        validInput.value?.first.let { valid ->
+            if (valid != null && valid) {
+                Log.i(TAG, "input is valid, we can search")
+                getRoute(routeID)
+            }
         }
     }
 
     // request route data from firebase service
     private fun getRoute(routeID: String) {
         Log.i(TAG, "searching getRoute")
+        routeFetched.value = true
     }
 }

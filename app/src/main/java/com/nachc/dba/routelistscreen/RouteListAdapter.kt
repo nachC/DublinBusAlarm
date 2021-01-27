@@ -40,6 +40,8 @@ class RouteListAdapter(private val tripList: ArrayList<Trip>):
         for (trip in tripList) {
             if (v.tag == trip.id) {
                 Log.i("RouteListAdapter", trip.id)
+                //val action = RouteListScreenFragmentDirections.actionRouteListScreenFragmentToPlaceholder(trip)
+                //Navigation.findNavController(v).navigate(action)
             }
         }
     }

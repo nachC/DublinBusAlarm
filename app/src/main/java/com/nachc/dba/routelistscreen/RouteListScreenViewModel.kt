@@ -9,10 +9,10 @@ class RouteListScreenViewModel : ViewModel() {
     val trips by lazy { MutableLiveData<List<Trip>>() }
 
     fun getTrips() {
-        val t1 = Trip("origin", "destination", null, null)
-        val t2 = Trip("origin2", "destination2", null, null)
-        val t3 = Trip("origin3", "destination3", null, null)
-        val t4 = Trip("origin4", "destination4", null, null)
+        val t1 = Trip("0","origin", "destination", null, null)
+        val t2 = Trip("1","origin", "destination", null, null)
+        val t3 = Trip("2","origin", "destination", null, null)
+        val t4 = Trip("3","origin", "destination", null, null)
 
         val tripList = arrayListOf(t1, t2, t3, t4)
 

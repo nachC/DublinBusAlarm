@@ -14,6 +14,7 @@ data class Route(
 )
 
 data class Trip(
+    val id: String?,
     val origin: String?,
     val destination: String?,
     val shape: ArrayList<ArrayList<String>>?,

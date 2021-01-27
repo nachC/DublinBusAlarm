@@ -39,6 +39,15 @@ android {
     }
 }
 
+def lifeCycleExtensionVersion = '1.1.1'
+def supportVersion = '28.0.0'
+def retrofitVersion = '2.3.0'
+def glideVersion = '4.9.0'
+def rxJavaVersion = '2.1.1'
+def navVersion = '2.1.0-alpha05'
+def daggerVersion = '2.14.1'
+def mockitoVersion = '2.11.0'
+
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -46,13 +55,27 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+
+    implementation "com.google.dagger:dagger:$daggerVersion"
+    implementation "com.google.dagger:dagger-android-support:$daggerVersion"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+    kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
+
+    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxJavaVersion"
+
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.2'
     implementation platform('com.google.firebase:firebase-bom:26.3.0')
+
+    testImplementation "org.mockito:mockito-inline:$mockitoVersion"
+    testImplementation "android.arch.core:core-testing:1.1.1"
+    kaptTest "com.google.dagger:dagger-compiler:$daggerVersion"
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

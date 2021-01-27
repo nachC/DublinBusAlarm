@@ -6,11 +6,17 @@
         <variable
             name="trip"
             type="com.nachc.dba.models.Trip" />
+        <variable
+            name="listener"
+            type="com.nachc.dba.routelistscreen.RouteClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/tripLayout"
+        android:onClick="@{listener::onClick}"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="10dp">
 
         <TextView
             style="@style/Text"
@@ -18,10 +24,10 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="10dp"
-            android:text="@{trip.origin + trip.destination}"
+            android:text="@{trip.origin + ` to ` + trip.destination}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -11,12 +11,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nachc.dba.R
 import com.nachc.dba.databinding.RouteListScreenFragmentBinding
 import com.nachc.dba.models.Trip
-import com.nachc.dba.searchscreen.SearchScreenFragmentDirections
 
 class RouteListScreenFragment : Fragment() {
 

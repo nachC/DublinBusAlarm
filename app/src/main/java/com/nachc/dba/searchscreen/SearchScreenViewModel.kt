@@ -10,7 +10,7 @@ class SearchScreenViewModel : ViewModel() {
 
     /**
      * TODO:
-     *  - refactor Models, create FirebaseService and implement getRoute method
+     *  - create FirebaseService and implement getRoute method
      *  - DI with Dagger2
      * */
 

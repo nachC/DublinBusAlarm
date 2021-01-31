@@ -20,8 +20,8 @@ data class Trip(
     val id: String?,
     val origin: String?,
     val destination: String?,
-    val shape: ArrayList<CoordinatePoint>?,
-    val stops: ArrayList<Stop>?
+    val shape: List<CoordinatePoint>?,
+    val stopSequence: List<Stop>?
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -36,6 +36,8 @@ data class Trip(
         parcel.writeString(id)
         parcel.writeString(origin)
         parcel.writeString(destination)
+        parcel.writeList(shape)
+        parcel.writeList(stopSequence)
     }
 
     override fun describeContents(): Int {

@@ -13,22 +13,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import android.widget.Toast
-import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.nachc.dba.R
 import com.nachc.dba.databinding.SearchScreenFragmentBinding
+import com.nachc.dba.models.Trip
 
 class SearchScreenFragment : Fragment() {
 
     /**
      * TODO:
+     *  - handle no internet connection case
      * */
 
     // tag for logging
@@ -44,12 +45,17 @@ class SearchScreenFragment : Fragment() {
     private val loadingObserver = Observer<Boolean> { isLoading ->
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         if (isLoading) {
-            binding.routeError.visibility = View.GONE
+            binding.loadError.visibility = View.GONE
         }
     }
     // Observer to be aware of any error from the backend
-    private val errorObserver = Observer<Boolean> { isError ->
-        binding.routeError.visibility = if (isError) View.VISIBLE else View.GONE
+    private val errorObserver = Observer<Pair<Boolean, String>> { isError ->
+        if (isError.first) {
+            binding.loadError.text = isError.second
+            binding.loadError.visibility = View.VISIBLE
+        } else {
+            View.GONE
+        }
     }
     // Observer to be aware of input validation results
     // as this is the first thing to check, we'll hide the keyboard here
@@ -61,13 +67,19 @@ class SearchScreenFragment : Fragment() {
             binding.inputLineEditText.error = isValidInput.second
         }
     }
-
-    private val routeFetchedObserver = Observer<Boolean> { isRouteFetched ->
-        if (isRouteFetched) {
-            findNavController().navigate(SearchScreenFragmentDirections.actionSearchScreenToRouteListScreen())
+    //
+    private val tripsObserver = Observer<List<Trip>> { trips ->
+        // trips will be null after onViewCreated
+        // it's there to reset the list when comming from routelist fragment after pressing back button
+        if (trips != null) {
+            Log.i(TAG, "navigate to routelistfragment")
+            findNavController().navigate(
+                SearchScreenFragmentDirections.actionSearchScreenToRouteListScreen(
+                    trips.toTypedArray()
+                )
+            )
         }
     }
-
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?,
                                 savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(
@@ -88,8 +100,18 @@ class SearchScreenFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // request location permissions right away (note: quite invasive for the user)
-        requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), FINE_LOCATION)
+        // check if we have location permissions
+        if (checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            binding.searchBtn.isEnabled = true
+        } else {
+            // request location permissions
+            binding.searchBtn.isEnabled = false
+            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), FINE_LOCATION)
+        }
+
+        //reset trips (sets trips as null in viewmodel)
+        // in case we come from the routeList fragment by pressing the back button
+        viewModel.resetTrips()
 
         binding.permissionBtn.setOnClickListener {
             openPermissionSettings()
@@ -105,8 +127,7 @@ class SearchScreenFragment : Fragment() {
         viewModel.validInput.observe(viewLifecycleOwner, validInputObserver)
         viewModel.loading.observe(viewLifecycleOwner, loadingObserver)
         viewModel.loadError.observe(viewLifecycleOwner, errorObserver)
-        viewModel.routeFetched.observe(viewLifecycleOwner, routeFetchedObserver)
-
+        viewModel.trips.observe(viewLifecycleOwner, tripsObserver)
     }
 
     // here we handle the result of calling requestPermissions
@@ -122,7 +143,8 @@ class SearchScreenFragment : Fragment() {
             // received request permission for fine-location
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // we have permission to use location -> we can search now
-                //viewModel.search(binding.inputLineEditText.text.toString())
+                binding.searchBtn.isEnabled = true
+                binding.allowLocationBtn.visibility = View.GONE
             } else {
                 // we don't have location permission
                 Toast.makeText(this.context, "Permission was not granted", Toast.LENGTH_SHORT).show()
@@ -158,6 +180,7 @@ class SearchScreenFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 0) {
             binding.permissionBtn.visibility = View.INVISIBLE
+            binding.searchBtn.isEnabled = true
             Toast.makeText(this.context, "You can search now", Toast.LENGTH_SHORT).show()
         }
     }

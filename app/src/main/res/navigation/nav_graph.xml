@@ -24,6 +24,9 @@
         <action
             android:id="@+id/actionRouteListToSearch"
             app:destination="@id/searchScreenFragment" />
+        <argument
+            android:name="trips"
+            app:argType="com.nachc.dba.models.Trip[]" />
     </fragment>
     <fragment android:id="@+id/placeholder" >
         <argument

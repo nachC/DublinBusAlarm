@@ -1,6 +1,5 @@
 package com.nachc.dba.routelistscreen
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,8 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nachc.dba.R
 import com.nachc.dba.databinding.RouteListScreenFragmentBinding
@@ -19,17 +16,13 @@ import com.nachc.dba.models.Trip
 class RouteListScreenFragment : Fragment() {
 
     val TAG: String = "RouteListScreenFragment"
-    private val viewModel: RouteListScreenViewModel by viewModels()
-    private val listAdapter = RouteListAdapter(arrayListOf())
-    private lateinit var binding: RouteListScreenFragmentBinding
 
-    private val tripsDataObserver = Observer<List<Trip>> { list ->
-        list?.let {
-            Log.i(TAG, list.size.toString())
-            binding.routeList.visibility = View.VISIBLE
-            listAdapter.updateTripList(it)
-        }
-    }
+    private val viewModel: RouteListScreenViewModel by viewModels()
+
+    private val listAdapter = RouteListAdapter(arrayListOf())
+
+    var trips: List<Trip>? = null
+    private lateinit var binding: RouteListScreenFragmentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,8 +36,14 @@ class RouteListScreenFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.trips.observe(viewLifecycleOwner, tripsDataObserver)
-        viewModel.getTrips()
+
+        // retrieve argument passed to fragment by navigation
+        // asign it to local variable and update the recyclerview list
+        arguments?.let {
+            trips = RouteListScreenFragmentArgs.fromBundle(it).trips.toList()
+            Log.i(TAG, "update trip list. Size: " + trips?.size)
+            listAdapter.updateTripList(trips!!)
+        }
 
         binding.routeList.apply {
             layoutManager = LinearLayoutManager(context)

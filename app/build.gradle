@@ -43,7 +43,7 @@ def lifeCycleExtensionVersion = '1.1.1'
 def supportVersion = '28.0.0'
 def retrofitVersion = '2.3.0'
 def glideVersion = '4.9.0'
-def rxJavaVersion = '2.1.1'
+def rxJavaVersion = '3.0.1'
 def navVersion = '2.1.0-alpha05'
 def daggerVersion = '2.14.1'
 def mockitoVersion = '2.11.0'
@@ -62,8 +62,9 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
     kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
 
-    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
-    implementation "io.reactivex.rxjava2:rxandroid:$rxJavaVersion"
+    implementation "io.reactivex.rxjava3:rxkotlin:$rxJavaVersion"
+    implementation "io.reactivex.rxjava3:rxjava:$rxJavaVersion"
+    implementation "io.reactivex.rxjava3:rxandroid:3.0.0"
 
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
@@ -72,6 +73,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.2'
     implementation platform('com.google.firebase:firebase-bom:26.3.0')
+    implementation 'com.google.firebase:firebase-database-ktx'
 
     testImplementation "org.mockito:mockito-inline:$mockitoVersion"
     testImplementation "android.arch.core:core-testing:1.1.1"

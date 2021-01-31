@@ -1,10 +1,11 @@
-package com.nachc.dba
+package com.nachc.dba.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
+import com.nachc.dba.R
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,14 +15,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        /*
-        navController = Navigation.findNavController(this, R.id.fragment_container_view_tag)
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         NavigationUI.setupActionBarWithNavController(this, navController)
-
-         */
     }
-    /*
+
     override fun onSupportNavigateUp(): Boolean {
         return NavigationUI.navigateUp(navController, null)
-    }*/
+    }
 }

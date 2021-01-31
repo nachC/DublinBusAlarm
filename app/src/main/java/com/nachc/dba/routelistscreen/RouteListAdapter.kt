@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.nachc.dba.R
 import com.nachc.dba.databinding.TripItemBinding
@@ -14,7 +13,10 @@ import com.nachc.dba.models.Trip
 class RouteListAdapter(private val tripList: ArrayList<Trip>):
     RecyclerView.Adapter<RouteListAdapter.RouteListViewHolder>(), RouteClickListener {
 
+    private val TAG = "RouteListAdapter"
+
     fun updateTripList(newTripList: List<Trip>) {
+        Log.i(TAG, "tripList cleared in adapter")
         tripList.clear()
         tripList.addAll(newTripList)
         notifyDataSetChanged()
@@ -39,7 +41,7 @@ class RouteListAdapter(private val tripList: ArrayList<Trip>):
     override fun onClick(v: View) {
         for (trip in tripList) {
             if (v.tag == trip.id) {
-                Log.i("RouteListAdapter", trip.id)
+                Log.i(TAG, trip.id)
                 //val action = RouteListScreenFragmentDirections.actionRouteListScreenFragmentToPlaceholder(trip)
                 //Navigation.findNavController(v).navigate(action)
             }

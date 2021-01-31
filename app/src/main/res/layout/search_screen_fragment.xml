@@ -57,7 +57,7 @@
                 android:layout_marginEnd="2dp"
                 android:background="@drawable/btn_search_custom"
                 android:text="@string/searchBtn"
-                android:onClick="@{() -> searchScreenViewModel.search(inputLineEditText.getText().toString())}"/>
+                android:onClick="@{() -> searchScreenViewModel.search(inputLineEditText.getText().toString().toLowerCase())}"/>
         </LinearLayout>
 
         <ProgressBar
@@ -129,10 +129,12 @@
             android:textAllCaps="true"/>
 
         <TextView
-            android:id="@+id/routeError"
+            android:id="@+id/loadError"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/routeError"
+            android:textColor="@color/design_default_color_error"
+            style="@style/Text"
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/dataSavedTextView"
             app:layout_constraintEnd_toEndOf="parent"

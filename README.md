@@ -12,7 +12,7 @@ Dublin Bus Alarm is a native android app, where the user can choose a Bus stop (
 
 4th -> when the the user is close to the selected stop, the alarm will be set off.
 
-***Demo video:*** https://youtu.be/16xrI4JoedA
+***Demo video:*** https://youtu.be/16xrI4JoedA (old version)
 
 The GTFS data was processed using Python to extract the exact data needed for the app. Said data was exported in JSON format to be used in Firebase Realtime DB.
 
@@ -22,36 +22,41 @@ The app also saves data to the Firebase RT-Database, especifically:
 - the selected stop's coordinates
 - the time it took to reach the selected stop (in epoch time)
 
-No data that could identify the user or the device is being saved in the FBDB.
-
-local.properties file should have:
-sdk.dir=path/to/android/sdk
-MAPS_API_DEBUG_KEY="API_KEY_HERE"
-
 ***DB STRUCTURE FOR ROUTES DATA ***
 By getting the route_id from the user (input) we get all the data for that route
 ```
 {
     routes: {
-        route_id: [
-            trip_id: {
-                Stop_sequence: [
-                    stop_id: {
-                        latlng: String,
-                        name: String
-                    },
-                ],
-                Origin: String,
-                Destination: String,
-                Shape: [
-                    shape_point_id: {
-                        lat: String,
-                        lng: String
-                    },
-                ]
+        routeid: {
+            trip_i: {
+                direction: String,
+                origin: String,
+                destination: String,
+                shape_id: [{
+                    lat: String,
+                    lng: String
+                }],
+                stop_sequence: [{
+                    name: String,
+                    lat: String,
+                    lng: String
+                }]
             },
-        ],
-        ...
+            trip_o: {
+                direction: String,
+                origin: String,
+                destination: String,
+                shape_id: [{
+                    lat: String,
+                    lng: String
+                }],
+                stop_sequence: [{
+                    name: String,
+                    lat: String,
+                    lng: String
+                }]
+            }
+        }
     }
 }
 ```

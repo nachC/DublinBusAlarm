@@ -16,10 +16,12 @@ data class Route(
     val trips: MutableList<Trip>?
 )
 
+@Suppress("UNCHECKED_CAST")
 data class Trip(
     val id: String?,
     val origin: String?,
     val destination: String?,
+    val direction: String?,
     val shape: List<CoordinatePoint>?,
     val stopSequence: List<Stop>?
 ): Parcelable {
@@ -27,8 +29,9 @@ data class Trip(
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
-        parcel.readArrayList(CoordinatePoint::class.java.classLoader) as ArrayList<CoordinatePoint>?,
-        parcel.readArrayList(Stop::class.java.classLoader) as ArrayList<Stop>
+        parcel.readString(),
+        parcel.createTypedArrayList(CoordinatePoint),
+        parcel.createTypedArrayList(Stop)
     ) {
     }
 
@@ -36,8 +39,9 @@ data class Trip(
         parcel.writeString(id)
         parcel.writeString(origin)
         parcel.writeString(destination)
-        parcel.writeList(shape)
-        parcel.writeList(stopSequence)
+        parcel.writeString(direction)
+        parcel.writeTypedList(shape)
+        parcel.writeTypedList(stopSequence)
     }
 
     override fun describeContents(): Int {
@@ -56,24 +60,22 @@ data class Trip(
 }
 
 data class Stop(
-    val name: String?,
-    val latlng: CoordinatePoint?,
-    val lat: Double? = latlng?.lat?.toDouble(),
-    val lng: Double? = latlng?.lng?.toDouble()
+    val name: String? = "",
+    //val latlng: CoordinatePoint?,
+    val lat: String? = "",
+    val lng: String? = ""
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
-        parcel.readParcelable(CoordinatePoint::class.java.classLoader),
-        parcel.readValue(Double::class.java.classLoader) as? Double,
-        parcel.readValue(Double::class.java.classLoader) as? Double
+        parcel.readString(),
+        parcel.readString()
     ) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)
-        parcel.writeParcelable(latlng, flags)
-        parcel.writeValue(lat)
-        parcel.writeValue(lng)
+        parcel.writeString(lat)
+        parcel.writeString(lng)
     }
 
     override fun describeContents(): Int {
@@ -92,8 +94,8 @@ data class Stop(
 }
 
 data class CoordinatePoint(
-    val lat: String?,
-    val lng: String?
+    val lat: String? = "",
+    val lng: String? = ""
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),

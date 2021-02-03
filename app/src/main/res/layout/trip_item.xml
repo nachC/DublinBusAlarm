@@ -19,12 +19,24 @@
         android:padding="10dp">
 
         <TextView
+            android:id="@+id/originToDest"
             style="@style/Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="10dp"
             android:text="@{trip.origin + ` to ` + trip.destination}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/direction"/>
+
+        <TextView
+            android:id="@+id/direction"
+            style="@style/Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/colorAccent"
+            android:text="@{trip.direction.toUpperCase()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>

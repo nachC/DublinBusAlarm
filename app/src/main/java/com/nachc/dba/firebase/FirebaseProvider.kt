@@ -12,50 +12,33 @@ import io.reactivex.rxjava3.core.Single
 
 class FirebaseProvider {
 
-    /**
-     * TODO:
-     *  - map shape and stop_sequence from FB to model
-     * */
-
     private val TAG = "FirebaseProvider"
 
     val _trips = ArrayList<Trip>()
-    var shape = ArrayList<CoordinatePoint>()
-    var stops = ArrayList<Stop>()
 
     fun getRouteData(routeID: String): Single<List<Trip>> {
-        return Single.create<List<Trip>?> { emitter ->
-            val listener = Firebase.database.reference
+        return Single.create { emitter ->
+            Firebase.database.reference
                 .child("routes")
                 .child(routeID)
                 .addListenerForSingleValueEvent(object: ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         _trips.clear()
                         for (trip in snapshot.children) {
-                            /*
-                            shape.clear()
-                            for (shapeCoords in trip.child("shape").children) {
-                                shapeCoords.getValue<CoordinatePoint>()?.let { shape.add(it) }
-                            }
-                            stops.clear()
-                            for (stop in trip.child("stopSequence").children) {
-                                stop.getValue<Stop>()?.let { stops.add(it) }
-                            }
-                             */
-
                             _trips.add(
                                 Trip(
                                     trip.key,
                                     trip.child("origin").getValue<String>(),
                                     trip.child("destination").getValue<String>(),
-                                    null,
-                                    null)
+                                    trip.child("direction").getValue<String>(),
+                                    trip.child("shape").getValue<List<CoordinatePoint>>(),
+                                    trip.child("stop_sequence").getValue<List<Stop>>())
                             )
                         }
-                        Log.i(TAG, "emitter on success. _trips size: " + _trips.size.toString())
                         if (_trips.size == 0) {
                             emitter.onError(Throwable("No results found. Please check bus line"))
                         } else {
+                            Log.i(TAG, "emitter on success. _trips size: " + _trips.size.toString())
                             emitter.onSuccess(_trips)
                         }
                     }

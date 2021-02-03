@@ -25,7 +25,7 @@
     <string name="allow_button">allow location</string>
 
     <!-- RoutesList -->
-    <string name="header_text">select a route</string>
+    <string name="header_text">select your trip</string>
 
     <!-- Error handling -->
 </resources>

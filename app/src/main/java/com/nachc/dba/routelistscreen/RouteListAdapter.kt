@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.nachc.dba.R
 import com.nachc.dba.databinding.TripItemBinding
@@ -42,8 +43,8 @@ class RouteListAdapter(private val tripList: ArrayList<Trip>):
         for (trip in tripList) {
             if (v.tag == trip.id) {
                 Log.i(TAG, trip.id)
-                //val action = RouteListScreenFragmentDirections.actionRouteListScreenFragmentToPlaceholder(trip)
-                //Navigation.findNavController(v).navigate(action)
+                val action = RouteListScreenFragmentDirections.actionRouteListToMaps(trip)
+                Navigation.findNavController(v).navigate(action)
             }
         }
     }

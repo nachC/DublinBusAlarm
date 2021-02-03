@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:809012160623:android:e618b2b02448bb617b459a",
+        "mobilesdk_app_id": "1:809012160623:android:2d81e89cf37e19bb7b459a",
         "android_client_info": {
-          "package_name": "com.example.dublinbusalarm"
+          "package_name": "com.nachc.dba"
         }
       },
       "oauth_client": [

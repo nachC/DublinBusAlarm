@@ -47,9 +47,9 @@ class SearchScreenViewModel : ViewModel() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(object: DisposableSingleObserver<List<Trip>>() {
                         override fun onSuccess(_trips: List<Trip>?) {
+                            trips.value = _trips
                             loading.value = false
                             loadError.value = Pair(false, "")
-                            trips.value = _trips
                         }
 
                         override fun onError(e: Throwable?) {

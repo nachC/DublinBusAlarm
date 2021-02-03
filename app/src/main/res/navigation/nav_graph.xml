@@ -19,16 +19,20 @@
         android:name="com.nachc.dba.routelistscreen.RouteListScreenFragment"
         android:label="RouteListScreenFragment" >
         <action
-            android:id="@+id/action_routeListScreenFragment_to_placeholder"
-            app:destination="@id/placeholder" />
-        <action
             android:id="@+id/actionRouteListToSearch"
             app:destination="@id/searchScreenFragment" />
         <argument
             android:name="trips"
             app:argType="com.nachc.dba.models.Trip[]" />
+        <action
+            android:id="@+id/actionRouteListToMaps"
+            app:destination="@id/mapsFragment" />
     </fragment>
-    <fragment android:id="@+id/placeholder" >
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="com.nachc.dba.googlemaps.MapsFragment"
+        android:label="fragment_maps"
+        tools:layout="@layout/fragment_maps" >
         <argument
             android:name="trip"
             app:argType="com.nachc.dba.models.Trip" />

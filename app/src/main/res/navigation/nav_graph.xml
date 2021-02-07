@@ -36,5 +36,8 @@
         <argument
             android:name="trip"
             app:argType="com.nachc.dba.models.Trip" />
+        <action
+            android:id="@+id/actionMapsToSearchScreen"
+            app:destination="@id/searchScreenFragment" />
     </fragment>
 </navigation>

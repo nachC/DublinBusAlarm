@@ -14,7 +14,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -27,18 +26,10 @@ import com.nachc.dba.models.Trip
 
 class SearchScreenFragment : Fragment() {
 
-    /**
-     * TODO:
-     *  - handle no internet connection case
-     * */
-
-    // tag for logging
     val TAG: String = "SearchScreenFragment"
-    // request code for fine location access permission
-    val FINE_LOCATION = 1
-    // viewModel reference
+    val FINE_LOCATION = 1 // request code for fine location access permission
+
     private val viewModel: SearchScreenViewModel by viewModels()
-    // binding reference
     private lateinit var binding: SearchScreenFragmentBinding
 
     // Observer to be aware of loading process
@@ -70,9 +61,8 @@ class SearchScreenFragment : Fragment() {
     //
     private val tripsObserver = Observer<List<Trip>> { trips ->
         // trips will be null after onViewCreated
-        // it's there to reset the list when comming from routelist fragment after pressing back button
+        // it's there to reset the list when coming from routelist fragment after pressing back button
         if (trips != null) {
-            Log.i(TAG, "navigate to routelistfragment")
             findNavController().navigate(
                 SearchScreenFragmentDirections.actionSearchScreenToRouteListScreen(
                     trips.toTypedArray()
@@ -169,8 +159,7 @@ class SearchScreenFragment : Fragment() {
             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
             val uri = Uri.fromParts("package", activity?.packageName, null)
             intent.data = uri
-            // here we route the user to the Settings menu to set the permissions manually
-            // we'll handle the result with the onActivityResult method
+            // we'll handle the result on onActivityResult
             startActivityForResult(intent, 0)
     }
 

@@ -9,17 +9,17 @@ plugins {
 def getLocalGoogleMapApiKey() {
     Properties properties = new Properties()
     properties.load(project.rootProject.file('local.properties').newDataInputStream())
-    def localMalKey = properties.getProperty('MAPS_API_DEBUG_KEY')
-    if (localMalKey == null) {
+    def localMapKey = properties.getProperty('MAPS_API_DEBUG_KEY')
+    if (localMapKey == null) {
         // Throw an exception if the property wasn't setup for this
         throw new GradleException(
                 "Google Map API Key property not found. Define your debug Google Map API Key [google.map.apiKey] in " +
                         "your local.properties file! E.g.: google.map.apiKey=YOUR_GOOGLE_MAP_API_KEY")
     }
-    return localMalKey
+    return localMapKey
 }
 
-String googleMapApiKey = System.env.MAP_API_KEY ?: getLocalGoogleMapApiKey()
+//String googleMapApiKey = getLocalGoogleMapApiKey()
 
 android {
     compileSdkVersion 29
@@ -32,6 +32,8 @@ android {
         versionCode 1
         versionName "1.0"
 
+        manifestPlaceholders = [googleMapApiKey:getLocalGoogleMapApiKey()]
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -39,11 +41,6 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-        debug {
-            /* Create a string resource which will be used in AndroidManifest.xml file (from Jenkins or local)*/
-            resValue "string", "google_maps_key", googleMapApiKey
-            println(">>>>>>>>> Google Map API Key: " + googleMapApiKey)
         }
     }
     compileOptions {

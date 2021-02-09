@@ -13,13 +13,13 @@ import androidx.core.app.NotificationManagerCompat
 import com.nachc.dba.R
 import com.nachc.dba.services.LocationService
 import com.nachc.dba.services.RingtoneService
+import com.nachc.dba.ui.MainActivity
 
-class AlarmReceiver: BroadcastReceiver() {
+class AlarmReceiver: BroadcastReceiver()     {
 
     /**
      * TODO:
-     *  - consider implementing LiveData to let MapsFragment know when notification was dismissed
-     *  so MapsFragment can navigate() to SearchScreenFragment
+     *  - wakeup lockscreen and allow to dismiss notification from it.
      * */
 
     private val TAG = "AlarmReceiver"
@@ -42,11 +42,17 @@ class AlarmReceiver: BroadcastReceiver() {
             val stopLocationServiceIntent = Intent(context, LocationService::class.java)
             val stopRingtoneServiceIntent = Intent(context, RingtoneService::class.java)
             context!!.stopService(stopLocationServiceIntent)
-            context!!.stopService(stopRingtoneServiceIntent)
+            context.stopService(stopRingtoneServiceIntent)
 
             // cancel ongoing notification
             notificationManager = NotificationManagerCompat.from(context)
             notificationManager!!.cancel(NOTIFICATION_ID)
+
+            // go back to the MainActivity
+            val backToMainActivityIntent = Intent(context, MainActivity::class.java)
+            backToMainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            backToMainActivityIntent.putExtra(NOTIFICATION_DISMISS, true)
+            context.startActivity(backToMainActivityIntent)
         }
         // otherwise, user is setting the alarm
         else {

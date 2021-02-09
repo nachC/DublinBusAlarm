@@ -2,13 +2,16 @@ package com.nachc.dba.ui
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.os.Build
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.nachc.dba.R
+import com.nachc.dba.googlemaps.MapsFragmentDirections
+import com.nachc.dba.util.stopLocationService
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,7 +30,20 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        if (intent!!.hasExtra("dismiss")) {
+            findNavController(R.id.mapsFragment).navigate(MapsFragmentDirections.actionMapsToSearchScreen())
+        }
+    }
+
+    override fun onBackPressed() {
+        stopLocationService(this)
+        super.onBackPressed()
+    }
+
     override fun onSupportNavigateUp(): Boolean {
+        stopLocationService(this)
         return NavigationUI.navigateUp(navController, null)
     }
 

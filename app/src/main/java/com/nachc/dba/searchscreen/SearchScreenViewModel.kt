@@ -22,7 +22,6 @@ class SearchScreenViewModel : ViewModel() {
     private val disposable = CompositeDisposable()
     private val routeRepository = RouteRepository()
 
-    // validate input
     // check for emptiness and regex match
     // set validInput value to a Pair(error: Boolean, errorMessage: String)
     private fun validateInput(input: String) {
@@ -55,7 +54,7 @@ class SearchScreenViewModel : ViewModel() {
                         override fun onError(e: Throwable?) {
                             loading.value = false
                             loadError.value = Pair(true, e?.message!!)
-                            Log.e(TAG, e?.message)
+                            Log.e(TAG, e.message)
                         }
 
                     })

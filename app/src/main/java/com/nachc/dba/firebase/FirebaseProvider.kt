@@ -6,6 +6,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.nachc.dba.models.CoordinatePoint
+import com.nachc.dba.models.Session
 import com.nachc.dba.models.Stop
 import com.nachc.dba.models.Trip
 import io.reactivex.rxjava3.core.Single
@@ -49,6 +50,21 @@ class FirebaseProvider {
                         emitter.onError(null)
                     }
                 })
+        }
+    }
+
+    fun saveSessionData(session: Session): Single<String> {
+        return Single.create { emitter ->
+            Firebase.database.reference
+                .child("sessions")
+                .push()
+                .setValue(session)
+                .addOnSuccessListener {
+                    emitter.onSuccess("Successful save")
+                }
+                .addOnFailureListener {
+                    emitter.onError(it)
+                }
         }
     }
 }

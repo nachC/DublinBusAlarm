@@ -14,6 +14,9 @@ Dublin Bus Alarm is a native android app, where the user can choose a Bus stop (
 
 ***Demo video:*** https://youtu.be/16xrI4JoedA (old version)
 
+GoogleMaps debug key is grabbed from local.properties file, defined as:
+MAPS_API_DEBUG_KEY=AIza...
+
 The GTFS data was processed using Python to extract the exact data needed for the app. Said data was exported in JSON format to be used in Firebase Realtime DB.
 
 The app also saves data to the Firebase RT-Database, especifically:

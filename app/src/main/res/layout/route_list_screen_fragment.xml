@@ -4,12 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".routelistscreen.RouteListScreenFragment">
 
-    <data>
-        <variable
-            name="routeListViewModel"
-            type="com.nachc.dba.routelistscreen.RouteListScreenViewModel" />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

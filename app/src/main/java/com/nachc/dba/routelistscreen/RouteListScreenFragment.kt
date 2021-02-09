@@ -26,11 +26,8 @@ class RouteListScreenFragment : Fragment() {
 
     val TAG: String = "RouteListScreenFragment"
 
-
     private val REQUEST_CHECK_SETTINGS = 214
     private val REQUEST_ENABLE_GPS = 516
-
-    private val viewModel: RouteListScreenViewModel by viewModels()
 
     private val listAdapter = RouteListAdapter(arrayListOf())
 
@@ -40,14 +37,13 @@ class RouteListScreenFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = DataBindingUtil.inflate(
             inflater,
             R.layout.route_list_screen_fragment,
             container,
             false
         )
-        binding.routeListViewModel = viewModel
         binding.lifecycleOwner = this
         return binding.root
     }
@@ -64,8 +60,7 @@ class RouteListScreenFragment : Fragment() {
         builder.setAlwaysShow(true)
         locationSettingsRequest = builder.build()
 
-        val settingsClient: SettingsClient = LocationServices.getSettingsClient(requireActivity())
-        settingsClient
+        LocationServices.getSettingsClient(requireActivity())
             .checkLocationSettings(locationSettingsRequest)
             .addOnSuccessListener { }
             .addOnFailureListener { e: Exception ->
@@ -93,10 +88,9 @@ class RouteListScreenFragment : Fragment() {
             }
 
         // retrieve argument passed to fragment by navigation
-        // asign it to local variable and update the recyclerview list
-        arguments?.let {
-            trips = RouteListScreenFragmentArgs.fromBundle(it).trips.toList()
-            Log.i(TAG, "update trip list. Size: " + trips?.size)
+        // assign it to local variable and update the recyclerview list
+        arguments.let {
+            trips = RouteListScreenFragmentArgs.fromBundle(it!!).trips.toList()
             listAdapter.updateTripList(trips!!)
         }
 

@@ -2,6 +2,7 @@ package com.nachc.dba.googlemaps
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.nachc.dba.di.DaggerMapsViewModelComponent
 import com.nachc.dba.models.Session
 import com.nachc.dba.repository.SessionRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -13,8 +14,12 @@ class MapsViewModel : ViewModel() {
 
     private val TAG = "MapsFragmentViewModel"
 
-    private val sessionRepository = SessionRepository()
     private val disposable = CompositeDisposable()
+    lateinit var sessionRepository: SessionRepository
+
+    init {
+        DaggerMapsViewModelComponent.create().inject(this)
+    }
 
     fun saveSessionData(session: Session) {
         disposable.add(

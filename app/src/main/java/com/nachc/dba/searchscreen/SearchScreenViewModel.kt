@@ -3,12 +3,14 @@ package com.nachc.dba.searchscreen
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.nachc.dba.di.DaggerSearchViewModelComponent
 import com.nachc.dba.models.Trip
 import com.nachc.dba.repository.RouteRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.observers.DisposableSingleObserver
 import io.reactivex.rxjava3.schedulers.Schedulers
+import javax.inject.Inject
 
 class SearchScreenViewModel : ViewModel() {
 
@@ -20,7 +22,13 @@ class SearchScreenViewModel : ViewModel() {
     val trips by lazy { MutableLiveData<List<Trip>>() }
 
     private val disposable = CompositeDisposable()
-    private val routeRepository = RouteRepository()
+
+    @Inject
+    lateinit var routeRepository: RouteRepository
+
+    init {
+        DaggerSearchViewModelComponent.create().inject(this)
+    }
 
     // check for emptiness and regex match
     // set validInput value to a Pair(error: Boolean, errorMessage: String)

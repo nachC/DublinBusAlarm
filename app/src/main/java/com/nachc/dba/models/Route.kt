@@ -12,10 +12,6 @@ import android.os.Parcelable
  * Each Stop has a name and a set of coordinates (lat, lng).
  */
 
-data class Route(
-    val trips: MutableList<Trip>?
-)
-
 @Suppress("UNCHECKED_CAST")
 data class Trip(
     val id: String?,

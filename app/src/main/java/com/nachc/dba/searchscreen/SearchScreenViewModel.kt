@@ -12,7 +12,7 @@ import io.reactivex.rxjava3.observers.DisposableSingleObserver
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
-class SearchScreenViewModel : ViewModel() {
+class SearchScreenViewModel(test: Boolean = true) : ViewModel() {
 
     private val TAG = "SearchScreenViewModel"
 
@@ -26,13 +26,17 @@ class SearchScreenViewModel : ViewModel() {
     @Inject
     lateinit var routeRepository: RouteRepository
 
+    private var injected = false
+
     init {
-        DaggerSearchViewModelComponent.create().inject(this)
+        if (!injected) {
+            DaggerSearchViewModelComponent.create().inject(this)
+        }
     }
 
     // check for emptiness and regex match
     // set validInput value to a Pair(error: Boolean, errorMessage: String)
-    private fun validateInput(input: String) {
+    fun validateInput(input: String) {
         if (input.isEmpty() || input.isBlank()) {
             validInput.value = Pair(false, "Enter a bus line")
             loading.value = false
@@ -52,7 +56,7 @@ class SearchScreenViewModel : ViewModel() {
                 routeRepository.getRouteData(routeID)
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(object: DisposableSingleObserver<List<Trip>>() {
+                    .subscribeWith(object : DisposableSingleObserver<List<Trip>>() {
                         override fun onSuccess(_trips: List<Trip>?) {
                             trips.value = _trips
                             loading.value = false
@@ -62,7 +66,6 @@ class SearchScreenViewModel : ViewModel() {
                         override fun onError(e: Throwable?) {
                             loading.value = false
                             loadError.value = Pair(true, e?.message!!)
-                            Log.e(TAG, e.message)
                         }
 
                     })
@@ -77,5 +80,9 @@ class SearchScreenViewModel : ViewModel() {
 
     fun resetTrips() {
         trips.value = null
+    }
+
+    init {
+        injected = true
     }
 }

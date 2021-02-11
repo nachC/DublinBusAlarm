@@ -7,7 +7,7 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-class FirebaseModule {
+open class FirebaseModule {
 
     @Provides
     fun provideFirebaseProvider(): FirebaseProvider {
@@ -15,7 +15,7 @@ class FirebaseModule {
     }
 
     @Provides
-    fun provideRouteRepository(): RouteRepository {
+    open fun provideRouteRepository(): RouteRepository {
         return RouteRepository()
     }
 

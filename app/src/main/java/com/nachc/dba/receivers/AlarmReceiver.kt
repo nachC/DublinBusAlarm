@@ -1,5 +1,6 @@
 package com.nachc.dba.receivers
 
+import android.app.KeyguardManager
 import android.app.Notification.EXTRA_NOTIFICATION_ID
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
@@ -13,14 +14,10 @@ import androidx.core.app.NotificationManagerCompat
 import com.nachc.dba.R
 import com.nachc.dba.services.LocationService
 import com.nachc.dba.services.RingtoneService
+import com.nachc.dba.ui.AlarmLockScreenActivity
 import com.nachc.dba.ui.MainActivity
 
 class AlarmReceiver: BroadcastReceiver()     {
-
-    /**
-     * TODO:
-     *  - wakeup lockscreen and allow to dismiss notification from it.
-     * */
 
     private val TAG = "AlarmReceiver"
     private val NOTIFICATION_TITLE = "Arrived to stop"
@@ -35,7 +32,7 @@ class AlarmReceiver: BroadcastReceiver()     {
 
         // check if user is trying to dismiss the notification
         if (intent!!.hasExtra(EXTRA_NOTIFICATION_ID) &&
-            intent.getStringExtra(EXTRA_NOTIFICATION_ID).equals(NOTIFICATION_DISMISS)) {
+            intent.getStringExtra(EXTRA_NOTIFICATION_ID)!! == NOTIFICATION_DISMISS) {
             Log.i(TAG, "dismiss alarm")
 
             // stop the services
@@ -60,6 +57,35 @@ class AlarmReceiver: BroadcastReceiver()     {
             val ringtoneIntent = Intent(context, RingtoneService::class.java)
             context!!.startService(ringtoneIntent)
             createNotification(context)
+
+            // check if the screen is locked or not
+            val km = context.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+            if( km.isKeyguardLocked) {
+                Log.i(TAG, "screen is locked")
+                /*
+                val alarmLockScreen = Intent(context, AlarmLockScreenActivity::class.java)
+                alarmLockScreen.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                context.startActivity(alarmLockScreen)
+                 */
+
+                val fullScreenIntent = Intent(context, AlarmLockScreenActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                }
+                val fullScreenPendingIntent = PendingIntent.getActivity(context, 0,
+                    fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+                val notificationBuilder = NotificationCompat.Builder(context, ALARM_CHANNEL_ID).apply {
+                    setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                    setContentTitle(NOTIFICATION_TITLE)
+                    setContentText(NOTIFICATION_TEXT)
+                    priority = NotificationCompat.PRIORITY_HIGH
+                    setCategory(NotificationCompat.CATEGORY_ALARM)
+                    setFullScreenIntent(fullScreenPendingIntent, true)
+                }
+                with(NotificationManagerCompat.from(context)) {
+                    notify(NOTIFICATION_ID, notificationBuilder.build())
+                }
+            }
         }
     }
 
@@ -80,13 +106,14 @@ class AlarmReceiver: BroadcastReceiver()     {
             ALARM_CHANNEL_ID
         )
             .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
-            .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.mipmap.ic_launcher))
+            .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.mipmap.ic_launcher_bus))
             .setContentTitle(NOTIFICATION_TITLE)
             .setContentText(NOTIFICATION_TEXT)
             .setContentIntent(dismissPendingIntent)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setCategory(NotificationCompat.CATEGORY_ALARM)
             .addAction(
-                R.drawable.ic_launcher_background,
+                R.drawable.ic_bus_vector,
                 NOTIFICATION_DISMISS,
                 dismissPendingIntent
             )

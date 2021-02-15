@@ -5,9 +5,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
-import android.net.Uri
+import android.net.*
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
@@ -25,11 +23,15 @@ import androidx.navigation.fragment.findNavController
 import com.nachc.dba.R
 import com.nachc.dba.databinding.SearchScreenFragmentBinding
 import com.nachc.dba.models.Trip
+import java.util.*
+
 
 class SearchScreenFragment : Fragment() {
 
-    val TAG: String = "SearchScreenFragment"
+    val TAG = "SearchScreenFragment"
     val FINE_LOCATION = 1 // request code for fine location access permission
+
+    private var isConnected: Boolean = false // flag for internet connectivity
 
     private val viewModel: SearchScreenViewModel by viewModels()
     private lateinit var binding: SearchScreenFragmentBinding
@@ -60,7 +62,7 @@ class SearchScreenFragment : Fragment() {
             binding.inputLineEditText.error = isValidInput.second
         }
     }
-    //
+    // Observer to be aware of the trips being set
     private val tripsObserver = Observer<List<Trip>> { trips ->
         // trips will be null after onViewCreated
         // it's there to reset the list when coming from routelist fragment after pressing back button
@@ -72,13 +74,17 @@ class SearchScreenFragment : Fragment() {
             )
         }
     }
-    override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?,
-                                savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.search_screen_fragment, container, false
         )
 
-        // Set the viewmodel for databinding - this allows the bound layout access to all of the
+        requireActivity().title = "Your actionbar title"
+
+        // Set the ViewModel for databinding - this allows the bound layout access to all of the
         // data in the VieWModel
         binding.searchScreenViewModel = viewModel
 
@@ -101,6 +107,23 @@ class SearchScreenFragment : Fragment() {
             requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), FINE_LOCATION)
         }
 
+        // Check for network connectivity. We'll allow the search functionality only if a connection is available
+        val cm = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val request = NetworkRequest.Builder().addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET).build()
+        cm.registerNetworkCallback(request, object : ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                super.onAvailable(network)
+                Log.i(TAG, "Network onAvailable")
+                isConnected = true
+            }
+
+            override fun onLost(network: Network) {
+                super.onLost(network)
+                Log.i(TAG, "Network onLost")
+                isConnected = false
+            }
+        })
+
         //reset trips (sets trips as null in viewmodel)
         // in case we come from the routeList fragment by pressing the back button
         viewModel.resetTrips()
@@ -113,6 +136,13 @@ class SearchScreenFragment : Fragment() {
         }
         binding.dataSavedTextView.setOnClickListener {
             showDataSavedDialog()
+        }
+        binding.searchBtn.setOnClickListener {
+            if (!isConnected) {
+                Toast.makeText(context, "Please, check your internet connection", Toast.LENGTH_SHORT).show()
+            } else {
+                viewModel.search(binding.inputLineEditText.text.toString().toLowerCase(Locale.ROOT))
+            }
         }
 
         // start observing the ViewModel
@@ -139,7 +169,7 @@ class SearchScreenFragment : Fragment() {
                 binding.allowLocationBtn.visibility = View.GONE
             } else {
                 // we don't have location permission
-                Toast.makeText(this.context, "Permission was not granted", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Permission was not granted", Toast.LENGTH_SHORT).show()
                 // see if user checked "Don't ask again" box before, if so, show button to open OS Settings
                 if (!shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
                     Log.i(TAG, "redirect user to settings")
@@ -182,13 +212,12 @@ class SearchScreenFragment : Fragment() {
         AlertDialog.Builder(activity)
             .setTitle("Data we save")
             .setMessage(
-                """
-            When the alarm triggers, we save some data to our database. 
+                """ 
             We save exactly four things: 
             - The coordinates of the stop you selected. 
-            - Your coordinates at the moment you select a stop 
-            - The time it took for the bus to reach the selected stop 
-            - The date the trip was made
+            - Your coordinates at the moment you select a stop. 
+            - The time it took for the bus to reach the selected stop. 
+            - The date the trip was made.
             """.trimIndent()
             ) // A null listener allows the button to dismiss the dialog and take no further action.
             .setPositiveButton(android.R.string.ok, null)

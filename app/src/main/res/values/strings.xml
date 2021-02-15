@@ -2,6 +2,7 @@
     <string name="app_name">Dublin Bus Alarm</string>
 
     <!-- SearchScreen  -->
+    <string name="search_fragment_label">Dublin Bus Alarm</string>
     <string name="inputLine">Enter Bus Line</string>
     <string name="inputLineHint">e.g. 66b</string>
     <string name="searchBtn">Search</string>
@@ -10,7 +11,9 @@
 
     <!-- MapsActivity -->
     <string name="title_activity_maps">Map</string>
+    <string name="maps_fragment_label"></string>
     <string name="mapMarkerInfoViewTitle">Selected</string>
+    <string name="alertDialog_info">Tap the stop where you want the alarm to ring. Once you\'re close to it, I will let you know! You can switch to another app, or lock the device, but make sure not to close the app!</string>
 
     <!-- Notification Channel strings -->
     <string name="alarm_channel_name">Alarm notification</string>
@@ -26,6 +29,11 @@
 
     <!-- RoutesList -->
     <string name="header_text">select your trip</string>
+    <string name="routelist_fragment_label">SELECT YOUR TRIP</string>
+    <string name="title_activity_alarm_lock_screen">AlarmLockScreen</string>
 
-    <!-- Error handling -->
+    <!-- AlarmLockScreenActivity -->
+    <string name="stop_button">dismiss alarm</string>
+    <string name="arrived_message">Arrived to Stop</string>
+
 </resources>

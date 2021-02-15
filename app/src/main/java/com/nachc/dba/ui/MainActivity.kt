@@ -4,6 +4,8 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -14,6 +16,8 @@ import com.nachc.dba.googlemaps.MapsFragmentDirections
 import com.nachc.dba.util.stopLocationService
 
 class MainActivity : AppCompatActivity() {
+
+    private val TAG = "MainActivity"
 
     private lateinit var navController: NavController
     private val CHANNEL_ID = "alarm_channel"
@@ -38,11 +42,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        Log.i(TAG, "onBackPressed")
         stopLocationService(this)
         super.onBackPressed()
     }
 
     override fun onSupportNavigateUp(): Boolean {
+        Log.i(TAG, "onSupportNavigateUp")
         stopLocationService(this)
         return NavigationUI.navigateUp(navController, null)
     }

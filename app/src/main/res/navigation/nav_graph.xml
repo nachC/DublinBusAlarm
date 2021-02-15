@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/searchScreenFragment"
         android:name="com.nachc.dba.searchscreen.SearchScreenFragment"
-        android:label="search_screen_fragment"
+        android:label="@string/search_fragment_label"
         tools:layout="@layout/search_screen_fragment" >
         <action
             android:id="@+id/action_searchScreen_to_routeListScreen"
@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/routeListScreenFragment"
         android:name="com.nachc.dba.routelistscreen.RouteListScreenFragment"
-        android:label="RouteListScreenFragment" >
+        android:label="@string/routelist_fragment_label">
         <action
             android:id="@+id/actionRouteListToSearch"
             app:destination="@id/searchScreenFragment" />
@@ -31,7 +31,7 @@
     <fragment
         android:id="@+id/mapsFragment"
         android:name="com.nachc.dba.googlemaps.MapsFragment"
-        android:label="fragment_maps"
+        android:label="@string/maps_fragment_label"
         tools:layout="@layout/fragment_maps" >
         <argument
             android:name="trip"

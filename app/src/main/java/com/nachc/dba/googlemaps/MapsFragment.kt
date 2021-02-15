@@ -38,14 +38,13 @@ import com.nachc.dba.util.startAlarm
 import com.nachc.dba.util.startLocationService
 import java.util.*
 
-
 @SuppressLint("MissingPermission")
 class MapsFragment : Fragment() {
 
     private val TAG = "MapsFragment"
     private val CAMERA_ZOOM = 13F
     private val REQUEST_CHECK_SETTINGS = 526
-    private val TRIGGER_DISTANCE_TO_STOP = 500F
+    private val TRIGGER_DISTANCE_TO_STOP = 50F
     private val ALARM_DELAY = 500
     private val NOTIFICATION_DISMISS = "dismiss"
 
@@ -204,7 +203,7 @@ class MapsFragment : Fragment() {
                             //alert dialog to allow the user to stop the alarm from the maps activity
                             alertDialog = AlertDialog.Builder(requireContext())
                                 .setTitle("Time to get out!")
-                                .setMessage("You're close to your destination.") // A null listener allows the button to dismiss the dialog and take no further action.
+                                .setMessage("You've arrived to your destination") // A null listener allows the button to dismiss the dialog and take no further action.
                                 .setPositiveButton("stop") { _: DialogInterface?, _: Int ->
                                     val dismissIntent = Intent(
                                         requireContext(),
@@ -227,7 +226,7 @@ class MapsFragment : Fragment() {
         // inform the user how to select a Stop
         alertDialog = AlertDialog.Builder(activity)
             .setTitle("Select your Stop")
-            .setMessage("Tap the stop where you want the alarm to ring. Once you're close to it, I will let you know!")
+            .setMessage(R.string.alertDialog_info)
             // A null listener allows the button to dismiss the dialog and take no further action.
             .setPositiveButton(android.R.string.ok, null)
             .show()

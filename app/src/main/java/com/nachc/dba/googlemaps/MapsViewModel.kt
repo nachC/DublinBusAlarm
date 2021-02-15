@@ -9,12 +9,15 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.observers.DisposableSingleObserver
 import io.reactivex.rxjava3.schedulers.Schedulers
+import javax.inject.Inject
 
 class MapsViewModel : ViewModel() {
 
     private val TAG = "MapsFragmentViewModel"
 
     private val disposable = CompositeDisposable()
+
+    @Inject
     lateinit var sessionRepository: SessionRepository
 
     init {

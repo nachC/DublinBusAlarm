@@ -6,7 +6,7 @@
     <string name="inputLine">Enter Bus Line</string>
     <string name="inputLineHint">e.g. 66b</string>
     <string name="searchBtn">Search</string>
-    <string name="dataSavedTextView">See here what data is saved</string>
+    <string name="dataSavedTextView">See here what data we save</string>
     <string name="routeError">An error occurred while searching the route</string>
 
     <!-- MapsActivity -->

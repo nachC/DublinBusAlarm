@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.provider.AlarmClock.ACTION_DISMISS_ALARM
+import android.provider.Settings
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -62,11 +63,6 @@ class AlarmReceiver: BroadcastReceiver()     {
             val km = context.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
             if( km.isKeyguardLocked) {
                 Log.i(TAG, "screen is locked")
-                /*
-                val alarmLockScreen = Intent(context, AlarmLockScreenActivity::class.java)
-                alarmLockScreen.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                context.startActivity(alarmLockScreen)
-                 */
 
                 val fullScreenIntent = Intent(context, AlarmLockScreenActivity::class.java).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -78,7 +74,7 @@ class AlarmReceiver: BroadcastReceiver()     {
                     setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
                     setContentTitle(NOTIFICATION_TITLE)
                     setContentText(NOTIFICATION_TEXT)
-                    priority = NotificationCompat.PRIORITY_HIGH
+                    priority = NotificationCompat.PRIORITY_MAX
                     setCategory(NotificationCompat.CATEGORY_ALARM)
                     setFullScreenIntent(fullScreenPendingIntent, true)
                 }
@@ -104,21 +100,18 @@ class AlarmReceiver: BroadcastReceiver()     {
         val builder: NotificationCompat.Builder = NotificationCompat.Builder(
             context,
             ALARM_CHANNEL_ID
-        )
-            .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
-            .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.mipmap.ic_launcher_bus))
-            .setContentTitle(NOTIFICATION_TITLE)
-            .setContentText(NOTIFICATION_TEXT)
-            .setContentIntent(dismissPendingIntent)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setCategory(NotificationCompat.CATEGORY_ALARM)
-            .addAction(
-                R.drawable.ic_bus_vector,
-                NOTIFICATION_DISMISS,
-                dismissPendingIntent
-            )
-
-            notificationManager = NotificationManagerCompat.from(context)
-            notificationManager!!.notify(NOTIFICATION_ID, builder.build())
+        ).apply {
+            setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+            setLargeIcon(BitmapFactory.decodeResource(context.resources, R.mipmap.ic_launcher_bus))
+            setContentTitle(NOTIFICATION_TITLE)
+            setContentText(NOTIFICATION_TEXT)
+            setContentIntent(dismissPendingIntent)
+            priority = NotificationCompat.PRIORITY_MAX
+            setCategory(NotificationCompat.CATEGORY_ALARM)
+            addAction(R.drawable.ic_bus_vector, NOTIFICATION_DISMISS, dismissPendingIntent)
+        }
+        with(NotificationManagerCompat.from(context)) {
+            notify(NOTIFICATION_ID, builder.build())
+        }
     }
 }

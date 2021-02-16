@@ -44,7 +44,7 @@ class MapsFragment : Fragment() {
     private val TAG = "MapsFragment"
     private val CAMERA_ZOOM = 13F
     private val REQUEST_CHECK_SETTINGS = 526
-    private val TRIGGER_DISTANCE_TO_STOP = 50F
+    private val TRIGGER_DISTANCE_TO_STOP = 100F
     private val ALARM_DELAY = 500
     private val NOTIFICATION_DISMISS = "dismiss"
 
@@ -137,17 +137,13 @@ class MapsFragment : Fragment() {
             sessionSelectedStopCoords.add(currentMarker!!.position.longitude)
             isStopSelected = true
 
-            fusedLocationClient.lastLocation?.addOnSuccessListener {
-                // here we'll save set Session's userCoords data
-                Log.i(TAG, it.latitude.toString() + " " + it.longitude.toString())
-            }
-
             fusedLocationClient.lastLocation.addOnSuccessListener {
                 it.let {
                     sessionUserOriginCoords.add(it.latitude)
                     sessionUserOriginCoords.add(it.longitude)
                 }
             }
+
             startTripDate = Date().time
             startLocationService(requireContext())
             false
@@ -168,7 +164,7 @@ class MapsFragment : Fragment() {
         mapFragment?.getMapAsync(callback)
 
         // retrieve argument passed to fragment by navigation
-        // assign it to local variable and update the recyclerview list
+        // assign it to local trip var because we want to display it's data on the map
         arguments.let {
             trip = MapsFragmentArgs.fromBundle(it!!).trip
         }

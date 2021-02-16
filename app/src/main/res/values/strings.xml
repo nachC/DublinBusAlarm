@@ -13,7 +13,7 @@
     <string name="title_activity_maps">Map</string>
     <string name="maps_fragment_label"></string>
     <string name="mapMarkerInfoViewTitle">Selected</string>
-    <string name="alertDialog_info">Tap the stop where you want the alarm to ring. Once you\'re close to it, I will let you know! You can switch to another app, or lock the device, but make sure not to close the app!</string>
+    <string name="alertDialog_info">Tap the stop where you want the alarm to ring. Make sure not to fully close the app! I recommend you test the alarm once, to make sure you can hear it.</string>
 
     <!-- Notification Channel strings -->
     <string name="alarm_channel_name">Alarm notification</string>

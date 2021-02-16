@@ -35,7 +35,7 @@ class MapsViewModel : ViewModel() {
                     }
 
                     override fun onError(e: Throwable?) {
-                        Log.i(TAG, e!!.message!!)
+                        Log.e(TAG, e!!.message!!)
                     }
                 }))
     }

@@ -112,6 +112,8 @@ class MapsFragment : Fragment() {
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstStop, CAMERA_ZOOM))
 
         googleMap.setOnMarkerClickListener { marker ->
+            googleMap.animateCamera(CameraUpdateFactory.zoomTo(20F))
+
             currentMarker.let {
                 it?.setIcon(BitmapDescriptorFactory.defaultMarker())
             }

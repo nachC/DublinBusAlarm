@@ -101,8 +101,8 @@ class AlarmReceiver: BroadcastReceiver()     {
             context,
             ALARM_CHANNEL_ID
         ).apply {
-            setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
-            setLargeIcon(BitmapFactory.decodeResource(context.resources, R.mipmap.ic_launcher_bus))
+            setSmallIcon(R.drawable.ic_notification_bus)
+            setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.ic_notification_bus))
             setContentTitle(NOTIFICATION_TITLE)
             setContentText(NOTIFICATION_TEXT)
             setContentIntent(dismissPendingIntent)

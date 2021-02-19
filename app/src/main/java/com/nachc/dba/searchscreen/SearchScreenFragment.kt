@@ -25,7 +25,6 @@ import com.nachc.dba.databinding.SearchScreenFragmentBinding
 import com.nachc.dba.models.Trip
 import java.util.*
 
-
 class SearchScreenFragment : Fragment() {
 
     val TAG = "SearchScreenFragment"
@@ -64,8 +63,7 @@ class SearchScreenFragment : Fragment() {
     }
     // Observer to be aware of the trips being set
     private val tripsObserver = Observer<List<Trip>> { trips ->
-        // trips will be null after onViewCreated
-        // it's there to reset the list when coming from routelist fragment after pressing back button
+        // trips will be set to null on onViewCreated because we could be coming back from routelist fragment
         if (trips != null) {
             findNavController().navigate(
                 SearchScreenFragmentDirections.actionSearchScreenToRouteListScreen(
@@ -81,8 +79,6 @@ class SearchScreenFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.search_screen_fragment, container, false
         )
-
-        requireActivity().title = "Your actionbar title"
 
         // Set the ViewModel for databinding - this allows the bound layout access to all of the
         // data in the VieWModel
@@ -124,8 +120,7 @@ class SearchScreenFragment : Fragment() {
             }
         })
 
-        //reset trips (sets trips as null in viewmodel)
-        // in case we come from the routeList fragment by pressing the back button
+        // set trips to null in case we come from the routeList fragment by pressing the back button
         viewModel.resetTrips()
 
         binding.permissionBtn.setOnClickListener {
@@ -139,7 +134,11 @@ class SearchScreenFragment : Fragment() {
         }
         binding.searchBtn.setOnClickListener {
             if (!isConnected) {
-                Toast.makeText(context, "Please, check your internet connection", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    "Please, check your internet connection",
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
                 viewModel.search(binding.inputLineEditText.text.toString().toLowerCase(Locale.ROOT))
             }
@@ -206,7 +205,7 @@ class SearchScreenFragment : Fragment() {
         }
     }
 
-    // method to show a AlertDialog with information
+    // method to show an AlertDialog with information
     // regarding what data is saved to the DB
     fun showDataSavedDialog() {
         AlertDialog.Builder(activity)

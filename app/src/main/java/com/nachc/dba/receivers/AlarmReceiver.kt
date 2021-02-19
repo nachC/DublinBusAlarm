@@ -71,7 +71,7 @@ class AlarmReceiver: BroadcastReceiver()     {
                     fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
                 val notificationBuilder = NotificationCompat.Builder(context, ALARM_CHANNEL_ID).apply {
-                    setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                    setSmallIcon(R.drawable.ic_notification_bus)
                     setContentTitle(NOTIFICATION_TITLE)
                     setContentText(NOTIFICATION_TEXT)
                     priority = NotificationCompat.PRIORITY_MAX

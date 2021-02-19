@@ -42,7 +42,8 @@ import java.util.*
 class MapsFragment : Fragment() {
 
     private val TAG = "MapsFragment"
-    private val CAMERA_ZOOM = 13F
+    private val FIRST_CAMERA_ZOOM = 13F
+    private val MAX_ZOOM = 15F
     private val REQUEST_CHECK_SETTINGS = 526
     private val TRIGGER_DISTANCE_TO_STOP = 100F
     private val ALARM_DELAY = 500
@@ -81,6 +82,7 @@ class MapsFragment : Fragment() {
          * user has installed Google Play services and returned to the app.
          */
         this.googleMap = googleMap
+        googleMap.setMaxZoomPreference(MAX_ZOOM)
 
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
@@ -109,7 +111,7 @@ class MapsFragment : Fragment() {
         drawPolylines(googleMap, trip.shape!!)
 
         // move camera to the first stop
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstStop, CAMERA_ZOOM))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstStop, FIRST_CAMERA_ZOOM))
 
         googleMap.setOnMarkerClickListener { marker ->
             googleMap.animateCamera(CameraUpdateFactory.zoomTo(20F))

@@ -209,14 +209,16 @@ class SearchScreenFragment : Fragment() {
     // regarding what data is saved to the DB
     fun showDataSavedDialog() {
         AlertDialog.Builder(activity)
-            .setTitle("Data we save")
+            .setTitle("Data saved")
             .setMessage(
                 """ 
-            We save exactly four things: 
+            Four things are saved to the database: 
             - The coordinates of the stop you selected. 
             - Your coordinates at the moment you select a stop. 
             - The time it took for the bus to reach the selected stop. 
             - The date the trip was made.
+            No data is saved that could identify you or your device.
+            The goal is to gain insights in what routes and stops are frequently used, and the time it takes for the given trips. 
             """.trimIndent()
             ) // A null listener allows the button to dismiss the dialog and take no further action.
             .setPositiveButton(android.R.string.ok, null)

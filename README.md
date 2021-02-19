@@ -12,7 +12,7 @@ Dublin Bus Alarm is a native android app, where the user can choose a Bus stop (
 
 4th -> when the the user is close to the selected stop, the alarm will be set off.
 
-***Demo video:*** https://youtu.be/16xrI4JoedA (old version)
+***Demo video:*** https://youtu.be/OAhUASUGeng 
 
 GoogleMaps debug key is grabbed from local.properties file, defined as:
 MAPS_API_DEBUG_KEY=AIza...

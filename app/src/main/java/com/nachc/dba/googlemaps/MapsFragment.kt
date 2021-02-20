@@ -188,6 +188,7 @@ class MapsFragment : Fragment() {
                             isStopReached = true
                             isStopSelected = false
 
+                            /*
                             sessionDate = Date().time
                             sessionTimeTakenToStop = (sessionDate - startTripDate)/1000
 
@@ -197,6 +198,7 @@ class MapsFragment : Fragment() {
                                 sessionTimeTakenToStop,
                                 sessionDate
                             ))
+                             */
 
                             startAlarm(requireContext(), ALARM_DELAY)
 

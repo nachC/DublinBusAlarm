@@ -13,7 +13,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
@@ -32,6 +31,7 @@ class RouteListScreenFragment : Fragment() {
     private val listAdapter = RouteListAdapter(arrayListOf())
 
     var trips: List<Trip>? = null
+
     private lateinit var binding: RouteListScreenFragmentBinding
 
     override fun onCreateView(

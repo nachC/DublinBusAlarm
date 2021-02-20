@@ -13,7 +13,7 @@
     <string name="title_activity_maps">Map</string>
     <string name="maps_fragment_label"></string>
     <string name="mapMarkerInfoViewTitle">Selected</string>
-    <string name="alertDialog_info">Tap the stop where you want the alarm to ring. Make sure not to fully close the app! I recommend you test the alarm once, to make sure you can hear it.</string>
+    <string name="alertDialog_info">Tap the stop where you want the alarm to ring. Make sure not to fully close the app! It\'s recommend you test the alarm first to make sure you can hear it, as some device manufacturer\'s settings might disable them.</string>
 
     <!-- Notification Channel strings -->
     <string name="alarm_channel_name">Alarm notification</string>
@@ -28,7 +28,7 @@
     <string name="allow_button">allow location</string>
 
     <!-- RoutesList -->
-    <string name="header_text">select your trip</string>
+    <string name="header_text">Routes might change during bank holidays, celebration periods, etc.</string>
     <string name="routelist_fragment_label">SELECT YOUR TRIP</string>
     <string name="title_activity_alarm_lock_screen">AlarmLockScreen</string>
 

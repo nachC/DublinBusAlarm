@@ -9,7 +9,7 @@ plugins {
 def getLocalGoogleMapApiKey() {
     Properties properties = new Properties()
     properties.load(project.rootProject.file('local.properties').newDataInputStream())
-    def localMapKey = properties.getProperty('MAPS_API_DEBUG_KEY')
+    def localMapKey = properties.getProperty('MAPS_API_KEY')
     if (localMapKey == null) {
         // Throw an exception if the property wasn't setup for this
         throw new GradleException(
@@ -18,8 +18,6 @@ def getLocalGoogleMapApiKey() {
     }
     return localMapKey
 }
-
-//String googleMapApiKey = getLocalGoogleMapApiKey()
 
 android {
     compileSdkVersion 29
@@ -39,7 +37,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

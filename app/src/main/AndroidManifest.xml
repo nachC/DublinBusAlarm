@@ -22,7 +22,8 @@
             android:excludeFromRecents="true"
             android:showOnLockScreen="true"
             android:showWhenLocked="true"
-            android:turnScreenOn="true" />
+            android:turnScreenOn="true"
+            android:screenOrientation="portrait"/>
 
         <service
             android:name=".services.RingtoneService"
@@ -45,9 +46,10 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="{googleMapApiKey}" />
+            android:value="${googleMapApiKey}" />
 
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

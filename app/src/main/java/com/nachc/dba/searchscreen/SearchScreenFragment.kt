@@ -20,9 +20,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.tabs.TabLayout
 import com.nachc.dba.R
 import com.nachc.dba.databinding.SearchScreenFragmentBinding
 import com.nachc.dba.models.Trip
+import com.nachc.dba.ui.MainScreenFragmentDirections
 import java.util.*
 
 class SearchScreenFragment : Fragment() {
@@ -66,7 +68,7 @@ class SearchScreenFragment : Fragment() {
         // trips will be set to null on onViewCreated because we could be coming back from routelist fragment
         if (trips != null) {
             findNavController().navigate(
-                SearchScreenFragmentDirections.actionSearchScreenToRouteListScreen(
+                MainScreenFragmentDirections.actionMainScreenToRouteList(
                     trips.toTypedArray()
                 )
             )

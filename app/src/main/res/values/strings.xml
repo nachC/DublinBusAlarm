@@ -36,4 +36,7 @@
     <string name="stop_button">dismiss alarm</string>
     <string name="arrived_message">Arrived to Stop</string>
 
+    <!-- MainScreenFragment -->
+    <string name="searchTab">search bus</string>
+    <string name="newsTab">dublin bus news</string>
 </resources>

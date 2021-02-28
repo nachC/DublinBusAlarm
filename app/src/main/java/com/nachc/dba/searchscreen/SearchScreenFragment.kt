@@ -20,11 +20,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.tabs.TabLayout
 import com.nachc.dba.R
 import com.nachc.dba.databinding.SearchScreenFragmentBinding
 import com.nachc.dba.models.Trip
 import com.nachc.dba.ui.MainScreenFragmentDirections
+import com.nachc.dba.util.isInternetAvailable
 import java.util.*
 
 class SearchScreenFragment : Fragment() {
@@ -106,21 +106,7 @@ class SearchScreenFragment : Fragment() {
         }
 
         // Check for network connectivity. We'll allow the search functionality only if a connection is available
-        val cm = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val request = NetworkRequest.Builder().addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET).build()
-        cm.registerNetworkCallback(request, object : ConnectivityManager.NetworkCallback() {
-            override fun onAvailable(network: Network) {
-                super.onAvailable(network)
-                Log.i(TAG, "Network onAvailable")
-                isConnected = true
-            }
-
-            override fun onLost(network: Network) {
-                super.onLost(network)
-                Log.i(TAG, "Network onLost")
-                isConnected = false
-            }
-        })
+        isInternetAvailable(requireContext()) { result -> isConnected = result }
 
         // set trips to null in case we come from the routeList fragment by pressing the back button
         viewModel.resetTrips()

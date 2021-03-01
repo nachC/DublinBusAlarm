@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/searchScreenFragment">
+    app:startDestination="@id/mainScreenFragment">
 
     <fragment
         android:id="@+id/searchScreenFragment"
@@ -39,5 +39,14 @@
         <action
             android:id="@+id/actionMapsToSearchScreen"
             app:destination="@id/searchScreenFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mainScreenFragment"
+        android:name="com.nachc.dba.ui.MainScreenFragment"
+        android:label="@string/search_fragment_label"
+        tools:layout="@layout/fragment_main_screen" >
+        <action
+            android:id="@+id/action_mainScreenToRouteList"
+            app:destination="@id/routeListScreenFragment" />
     </fragment>
 </navigation>

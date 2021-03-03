@@ -39,4 +39,6 @@
     <!-- MainScreenFragment -->
     <string name="searchTab">search bus</string>
     <string name="newsTab">dublin bus news</string>
+
+    <string name="intro_first_list">Text with a \u2022</string>
 </resources>

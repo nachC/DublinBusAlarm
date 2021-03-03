@@ -12,6 +12,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.nachc.dba.R
 import com.nachc.dba.googlemaps.MapsFragmentDirections
+import com.nachc.dba.ui.appintro.AppIntroActivity
 import com.nachc.dba.util.stopLocationService
 
 class MainActivity : AppCompatActivity() {
@@ -23,6 +24,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val appIntroIntent = Intent(applicationContext, AppIntroActivity::class.java)
+        startActivity(appIntroIntent)
+
         setContentView(R.layout.activity_main)
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)

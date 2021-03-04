@@ -21,16 +21,16 @@
 
     <!-- Styles for intro screens -->
     <style name="header">
-        <item name="android:textSize">42sp</item>
+        <item name="android:textSize">40sp</item>
         <item name="android:textStyle">bold</item>
         <item name="textAllCaps">true</item>
+        <item name="android:gravity">center</item>
         <item name="android:textColor">@color/colorYellowAccent</item>
     </style>
 
     <style name="description">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">#fff</item>
-        <item name="textAllCaps">true</item>
     </style>
 
     <style name="listItem">

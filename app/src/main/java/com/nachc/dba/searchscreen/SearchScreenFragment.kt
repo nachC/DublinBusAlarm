@@ -93,9 +93,8 @@ class SearchScreenFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun onResume() {
+        super.onResume()
         // check if we have location permissions
         if (checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             binding.searchBtn.isEnabled = true
@@ -104,6 +103,10 @@ class SearchScreenFragment : Fragment() {
             binding.searchBtn.isEnabled = false
             requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), FINE_LOCATION)
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         // Check for network connectivity. We'll allow the search functionality only if a connection is available
         isInternetAvailable(requireContext()) { result -> isConnected = result }

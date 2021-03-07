@@ -3,6 +3,7 @@ package com.nachc.dba.ui
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +11,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
+import androidx.preference.PreferenceManager
 import com.nachc.dba.R
 import com.nachc.dba.googlemaps.MapsFragmentDirections
 import com.nachc.dba.ui.appintro.AppIntroActivity
@@ -19,14 +21,23 @@ class MainActivity : AppCompatActivity() {
 
     private val TAG = "MainActivity"
 
+    private lateinit var sharedPref: SharedPreferences
+    private val APP_INTRO_KEY = "SHOWN_INTRO"
+
     private lateinit var navController: NavController
     private val CHANNEL_ID = "alarm_channel"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val appIntroIntent = Intent(applicationContext, AppIntroActivity::class.java)
-        startActivity(appIntroIntent)
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this)
+        val shownIntro = sharedPref.getBoolean(APP_INTRO_KEY, false)
+
+        if (!shownIntro) {
+            sharedPref.edit().putBoolean(APP_INTRO_KEY, true).apply()
+            val appIntroIntent = Intent(applicationContext, AppIntroActivity::class.java)
+            startActivity(appIntroIntent)
+        }
 
         setContentView(R.layout.activity_main)
 

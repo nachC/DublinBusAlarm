@@ -25,6 +25,8 @@ import com.nachc.dba.databinding.SearchScreenFragmentBinding
 import com.nachc.dba.models.Trip
 import com.nachc.dba.ui.MainScreenFragmentDirections
 import com.nachc.dba.util.isInternetAvailable
+import com.nachc.dba.util.startAlarm
+import kotlinx.android.synthetic.main.search_screen_fragment.view.*
 import java.util.*
 
 class SearchScreenFragment : Fragment() {
@@ -95,6 +97,7 @@ class SearchScreenFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        /*
         // check if we have location permissions
         if (checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             binding.searchBtn.isEnabled = true
@@ -103,10 +106,19 @@ class SearchScreenFragment : Fragment() {
             binding.searchBtn.isEnabled = false
             requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), FINE_LOCATION)
         }
+         */
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        /**
+         * Here we need to check for location permission only IF IT ISN'T a fresh install
+         * because the user could've revoked permission between sessions.
+         * IF IT IS a fresh install, we don't check it here because at this point the user
+         * is on the app intro screens where we request location permissions.
+         * ***user sharedpreferences*** key=SHOWN_INTRO
+         * */
 
         // Check for network connectivity. We'll allow the search functionality only if a connection is available
         isInternetAvailable(requireContext()) { result -> isConnected = result }
@@ -122,6 +134,9 @@ class SearchScreenFragment : Fragment() {
         }
         binding.dataSavedTextView.setOnClickListener {
             showDataSavedDialog()
+        }
+        binding.testAlarmBtn.setOnClickListener {
+            startAlarm(requireContext(), 500)
         }
         binding.searchBtn.setOnClickListener {
             if (!isConnected) {

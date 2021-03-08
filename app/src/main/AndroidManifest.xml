@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DublinBusAlarm">
 
-        <activity android:name=".ui.appintro.AppIntroActivity"
+        <activity android:name=".ui.AppIntroActivity"
             android:theme="@style/Theme.Design.NoActionBar"
             />
 

@@ -14,7 +14,7 @@ import androidx.navigation.ui.NavigationUI
 import androidx.preference.PreferenceManager
 import com.nachc.dba.R
 import com.nachc.dba.googlemaps.MapsFragmentDirections
-import com.nachc.dba.ui.appintro.AppIntroActivity
+import com.nachc.dba.ui.AppIntroActivity
 import com.nachc.dba.util.stopLocationService
 
 class MainActivity : AppCompatActivity() {

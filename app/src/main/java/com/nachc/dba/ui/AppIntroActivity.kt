@@ -1,4 +1,4 @@
-package com.nachc.dba.ui.appintro
+package com.nachc.dba.ui
 
 import android.Manifest
 import android.os.Bundle
@@ -23,7 +23,7 @@ class AppIntroActivity : AppIntro() {
         askForPermissions(
             permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
             slideNumber = 2,
-            required = true)
+            required = false)
     }
 
     override fun onDonePressed(currentFragment: Fragment?) {

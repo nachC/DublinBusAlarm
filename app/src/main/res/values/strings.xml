@@ -8,6 +8,8 @@
     <string name="searchBtn">Search</string>
     <string name="dataSavedTextView">See what data is saved</string>
     <string name="routeError">An error occurred while searching the route</string>
+    <string name="testAlarmBtn">test alarm</string>
+    <string name="testAlarmHelp">Can\'t hear alarm? Tap here</string>
 
     <!-- MapsActivity -->
     <string name="title_activity_maps">Map</string>

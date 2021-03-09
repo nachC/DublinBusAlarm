@@ -42,6 +42,7 @@ class SearchScreenFragment : Fragment() {
     private lateinit var sharedPref: SharedPreferences
 
     private var isConnected: Boolean = false // flag for internet connectivity
+    private var alarmOnGoing: Boolean = false
 
     private val viewModel: SearchScreenViewModel by viewModels()
     private lateinit var binding: SearchScreenFragmentBinding
@@ -162,7 +163,10 @@ class SearchScreenFragment : Fragment() {
         }
          */
         binding.testAlarmBtn.setOnClickListener {
-            startAlarm(requireContext(), 500)
+            if (!alarmOnGoing) {
+                alarmOnGoing = true
+                startAlarm(requireContext(), 500)
+            }
         }
         binding.testAlarmHelp.setOnClickListener {
             AlertDialog.Builder(requireContext()).apply {

@@ -5,9 +5,6 @@ import android.app.NotificationManager
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
-import android.view.KeyEvent
-import android.webkit.WebViewFragment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -17,7 +14,6 @@ import androidx.preference.PreferenceManager
 import com.nachc.dba.R
 import com.nachc.dba.googlemaps.MapsFragmentDirections
 import com.nachc.dba.util.stopLocationService
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -58,15 +54,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        Log.i(TAG, "onBackPressed")
-        val navhostfragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
-        Log.i(TAG, navhostfragment!!.childFragmentManager.fragments[0].id.toString())
         stopLocationService(this)
         super.onBackPressed()
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        Log.i(TAG, "onSupportNavigateUp")
         stopLocationService(this)
         return NavigationUI.navigateUp(navController, null)
     }

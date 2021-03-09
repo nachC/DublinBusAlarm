@@ -33,7 +33,7 @@
     <string name="allow_button">allow location</string>
 
     <!-- RoutesList -->
-    <string name="header_text">Routes might change during bank holidays, celebration periods, etc.</string>
+    <string name="header_text">Routes might change during bank holidays, celebration periods, etc. You can find information in the Dublin Bus News tab on the main screen.</string>
     <string name="routelist_fragment_label">SELECT YOUR TRIP</string>
     <string name="title_activity_alarm_lock_screen">AlarmLockScreen</string>
 

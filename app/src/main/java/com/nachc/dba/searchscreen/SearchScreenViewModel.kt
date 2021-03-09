@@ -12,7 +12,7 @@ import io.reactivex.rxjava3.observers.DisposableSingleObserver
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
-class SearchScreenViewModel(test: Boolean = true) : ViewModel() {
+class SearchScreenViewModel : ViewModel() {
 
     private val TAG = "SearchScreenViewModel"
 
@@ -80,9 +80,5 @@ class SearchScreenViewModel(test: Boolean = true) : ViewModel() {
 
     fun resetTrips() {
         trips.value = null
-    }
-
-    init {
-        injected = true
     }
 }

@@ -1,6 +1,7 @@
 package com.nachc.dba
 
 import android.app.Application
+import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.nachc.dba.di.DaggerSearchViewModelComponent
@@ -31,7 +32,7 @@ class SearchScreenViewModelTest {
 
     //val application = Mockito.mock(Application::class.java)
 
-    var searchScreenViewModel = SearchScreenViewModel(true)
+    var searchScreenViewModel = SearchScreenViewModel()
 
     @Before
     fun setup() {

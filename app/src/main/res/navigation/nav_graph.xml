@@ -3,24 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/searchScreenFragment">
+    app:startDestination="@id/mainScreenFragment">
 
-    <fragment
-        android:id="@+id/searchScreenFragment"
-        android:name="com.nachc.dba.searchscreen.SearchScreenFragment"
-        android:label="@string/search_fragment_label"
-        tools:layout="@layout/search_screen_fragment" >
-        <action
-            android:id="@+id/action_searchScreen_to_routeListScreen"
-            app:destination="@id/routeListScreenFragment" />
-    </fragment>
     <fragment
         android:id="@+id/routeListScreenFragment"
         android:name="com.nachc.dba.routelistscreen.RouteListScreenFragment"
         android:label="@string/routelist_fragment_label">
         <action
-            android:id="@+id/actionRouteListToSearch"
-            app:destination="@id/searchScreenFragment" />
+            android:id="@+id/actionRouteListToMainScreen"
+            app:destination="@id/mainScreenFragment" />
         <argument
             android:name="trips"
             app:argType="com.nachc.dba.models.Trip[]" />
@@ -37,7 +28,16 @@
             android:name="trip"
             app:argType="com.nachc.dba.models.Trip" />
         <action
-            android:id="@+id/actionMapsToSearchScreen"
-            app:destination="@id/searchScreenFragment" />
+            android:id="@+id/actionMapsToMainScreen"
+            app:destination="@id/mainScreenFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mainScreenFragment"
+        android:name="com.nachc.dba.ui.MainScreenFragment"
+        android:label="@string/search_fragment_label"
+        tools:layout="@layout/fragment_main_screen" >
+        <action
+            android:id="@+id/action_mainScreenToRouteList"
+            app:destination="@id/routeListScreenFragment" />
     </fragment>
 </navigation>

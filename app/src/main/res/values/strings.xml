@@ -8,12 +8,17 @@
     <string name="searchBtn">Search</string>
     <string name="dataSavedTextView">See what data is saved</string>
     <string name="routeError">An error occurred while searching the route</string>
+    <string name="testAlarmBtn">test alarm</string>
+    <string name="testAlarmHelp">Can\'t hear alarm? Tap here</string>
+    <string name="settings">settings</string>
+    <string name="testAlarmHelpDialogText">Battery optimization could be preventing the alarm from working properly. Please, check the settings for Dublin Bus Alarm to see if it\'s being optimized. If so, try setting it so it\'s not optimized.</string>
+    <string name="testAlarmHelpDialogTitle">Fix Alarm</string>
 
     <!-- MapsActivity -->
     <string name="title_activity_maps">Map</string>
     <string name="maps_fragment_label"></string>
     <string name="mapMarkerInfoViewTitle">Selected</string>
-    <string name="alertDialog_info">Tap the stop where you want the alarm to ring. Make sure not to fully close the app! It\'s recommend you test the alarm first to make sure you can hear it, as some device manufacturer\'s settings might disable them.</string>
+    <string name="alertDialog_info">Tap the stop where you want the alarm to ring. Make sure not to fully close the app. Have a nice trip!</string>
 
     <!-- Notification Channel strings -->
     <string name="alarm_channel_name">Alarm notification</string>
@@ -36,4 +41,27 @@
     <string name="stop_button">dismiss alarm</string>
     <string name="arrived_message">Arrived to Stop</string>
 
+    <!-- MainScreenFragment -->
+    <string name="searchTab">search bus</string>
+    <string name="newsTab">dublin bus news</string>
+
+    <!-- App Intro -->
+    <string name="intro_first_header">Welcome</string>
+    <string name="intro_first_description">Dublin Bus Alarm will make your trips more comfortable and relaxed by letting you know when you arrive at your destination.</string>
+    <string name="intro_first_description2">When you\'re 100 meters away from the stop, DBA will set off an alarm to let you know!</string>
+    <string name="search_list_item">1. Search a route</string>
+    <string name="trips_direction_list_item">2. Choose trip\'s direction</string>
+    <string name="select_stop_list_item">3. Select a stop</string>
+
+    <string name="intro_second_header">Location</string>
+    <string name="intro_second_description">"In order for DBA to do its job, it needs to know your location. It will be used to display your position on the map and know when you've arrived at your destination.
+        \n\nPlease, accept the location permission request on the next screen."</string>
+
+    <string name="intro_third_header">Battery optimizations</string>
+    <string name="intro_third_description">Some device manufacturers implement their own battery optimizations
+        that can prevent the alarm from ringing.\n\n
+        DBA can\'t detect these proprietary settings, so it\'s recommended that you
+test the alarm to make sure everything is OK.\n
+You\'ll be able to test the alarm on the main screen.
+    </string>
 </resources>

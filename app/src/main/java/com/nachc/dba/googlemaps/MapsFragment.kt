@@ -98,7 +98,7 @@ class MapsFragment : Fragment() {
             if (alertDialog != null) {
                 alertDialog!!.dismiss()
             }
-            findNavController().navigate(MapsFragmentDirections.actionMapsToSearchScreen())
+            findNavController().navigate(MapsFragmentDirections.actionMapsToMainScreen())
         }
 
         val firstStop = LatLng(

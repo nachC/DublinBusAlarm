@@ -1,7 +1,6 @@
 package com.nachc.dba.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +10,9 @@ import com.google.android.material.tabs.TabLayout
 import com.nachc.dba.R
 
 class MainScreenFragment : Fragment() {
+
+    private val TAG = "MainScreenFragment"
+
     private lateinit var pageAdapter: PageAdapter
     private lateinit var viewPager: ViewPager2
 
@@ -43,6 +45,5 @@ class MainScreenFragment : Fragment() {
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
         })
-
     }
 }

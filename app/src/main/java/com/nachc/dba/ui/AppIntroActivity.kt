@@ -2,14 +2,15 @@ package com.nachc.dba.ui
 
 import android.Manifest
 import android.os.Bundle
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.github.appintro.AppIntro
 import com.github.appintro.AppIntroCustomLayoutFragment
-import com.github.appintro.AppIntroFragment
 import com.nachc.dba.R
 
 class AppIntroActivity : AppIntro() {
+
+    private val TAG = "AppIntroActivity"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -23,7 +24,12 @@ class AppIntroActivity : AppIntro() {
         askForPermissions(
             permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
             slideNumber = 2,
-            required = false)
+            required = true)
+    }
+
+    override fun onUserDisabledPermission(permissionName: String) {
+        // User pressed "Deny" + "Don't ask again" on the permission dialog
+        goToNextSlide()
     }
 
     override fun onDonePressed(currentFragment: Fragment?) {

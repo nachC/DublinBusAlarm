@@ -5,9 +5,7 @@
     tools:context=".searchscreen.SearchScreenFragment">
 
     <data>
-
         <import type="android.view.View" />
-
         <variable
             name="searchScreenViewModel"
             type="com.nachc.dba.searchscreen.SearchScreenViewModel" />

@@ -14,7 +14,6 @@ import androidx.navigation.ui.NavigationUI
 import androidx.preference.PreferenceManager
 import com.nachc.dba.R
 import com.nachc.dba.googlemaps.MapsFragmentDirections
-import com.nachc.dba.ui.AppIntroActivity
 import com.nachc.dba.util.stopLocationService
 
 class MainActivity : AppCompatActivity() {
@@ -34,9 +33,9 @@ class MainActivity : AppCompatActivity() {
         val shownIntro = sharedPref.getBoolean(APP_INTRO_KEY, false)
 
         if (!shownIntro) {
-            sharedPref.edit().putBoolean(APP_INTRO_KEY, true).apply()
+            //sharedPref.edit().putBoolean(APP_INTRO_KEY, true).apply()
             val appIntroIntent = Intent(applicationContext, AppIntroActivity::class.java)
-            startActivity(appIntroIntent)
+            startActivityForResult(appIntroIntent, 101)
         }
 
         setContentView(R.layout.activity_main)
@@ -46,13 +45,12 @@ class MainActivity : AppCompatActivity() {
 
         // create notification channel to handle the alarm notifications
         createNotificationChannel()
-
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         if (intent!!.hasExtra("dismiss")) {
-            findNavController(R.id.mapsFragment).navigate(MapsFragmentDirections.actionMapsToSearchScreen())
+            findNavController(R.id.mapsFragment).navigate(MapsFragmentDirections.actionMapsToMainScreen())
         }
     }
 

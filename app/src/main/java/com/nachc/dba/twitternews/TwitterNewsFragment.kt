@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebViewClient
 import com.nachc.dba.R
 import com.nachc.dba.util.isInternetAvailable
 import kotlinx.android.synthetic.main.fragment_twitter_news.*
@@ -25,7 +24,6 @@ class TwitterNewsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         webView.apply {
-            webViewClient = WebViewClient()
             settings.javaScriptEnabled = true
         }
 

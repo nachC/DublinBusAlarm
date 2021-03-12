@@ -13,6 +13,7 @@
     <string name="settings">settings</string>
     <string name="testAlarmHelpDialogText">Battery optimization could be preventing the alarm from working properly. Please, check the settings for Dublin Bus Alarm to see if it\'s being optimized. If so, try setting it so it\'s not optimized.</string>
     <string name="testAlarmHelpDialogTitle">Fix Alarm</string>
+    <string name="busStopBGContentDescription">bus stop background</string>
 
     <!-- MapsActivity -->
     <string name="title_activity_maps">Map</string>

@@ -20,6 +20,7 @@ import com.google.android.gms.location.*
 import com.nachc.dba.R
 import com.nachc.dba.databinding.RouteListScreenFragmentBinding
 import com.nachc.dba.models.Trip
+import kotlinx.android.synthetic.main.trip_item.*
 
 class RouteListScreenFragment : Fragment() {
 

@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
@@ -35,6 +36,9 @@ class RouteListAdapter(private val tripList: ArrayList<Trip>):
         holder.view.trip = tripList[position]
         holder.view.listener = this
         holder.view.tripLayout.tag = tripList[position].id
+        holder.view.favButton.setOnClickListener {
+            Log.i(TAG, "added to favourites!")
+        }
     }
 
     override fun getItemCount() = tripList.size

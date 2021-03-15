@@ -33,10 +33,14 @@
     <string name="settings_button">location settings</string>
     <string name="allow_button">allow location</string>
 
-    <!-- RoutesList -->
+    <!-- RoutesListScreen -->
     <string name="header_text">Routes might change during bank holidays, celebration periods, etc. You can find information in the Dublin Bus News tab on the main screen.</string>
     <string name="routelist_fragment_label">SELECT YOUR TRIP</string>
     <string name="title_activity_alarm_lock_screen">AlarmLockScreen</string>
+    <string name="favBtn">add to favourites</string>
+    <string name="origin"><b>Origin:</b> %s</string>
+    <string name="destination"><b>Destination:</b> %s</string>
+    <string name="num_of_stops"><b>Total stops:</b> %s</string>
 
     <!-- AlarmLockScreenActivity -->
     <string name="stop_button">dismiss alarm</string>

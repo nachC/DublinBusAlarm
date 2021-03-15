@@ -21,6 +21,9 @@
         <item name="android:textColorHint">@color/colorYellowAccent</item>
     </style>
 
+    <style name="tripCard" parent="Widget.MaterialComponents.CardView">
+    </style>
+
     <style name="Text">
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>

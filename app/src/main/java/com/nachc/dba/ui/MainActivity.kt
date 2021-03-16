@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity() {
         val shownIntro = sharedPref.getBoolean(APP_INTRO_KEY, false)
 
         if (!shownIntro) {
-            //sharedPref.edit().putBoolean(APP_INTRO_KEY, true).apply()
             val appIntroIntent = Intent(applicationContext, AppIntroActivity::class.java)
             startActivityForResult(appIntroIntent, 101)
         }

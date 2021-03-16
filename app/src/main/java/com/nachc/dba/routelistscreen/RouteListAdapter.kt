@@ -37,6 +37,7 @@ class RouteListAdapter(private val tripList: ArrayList<Trip>):
         holder.view.listener = this
         holder.view.tripLayout.tag = tripList[position].id
         holder.view.favButton.setOnClickListener {
+            Toast.makeText(it.context, "Comming soon!", Toast.LENGTH_SHORT).show()
             Log.i(TAG, "added to favourites!")
         }
     }

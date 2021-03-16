@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.DublinBusAlarm" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
@@ -28,11 +28,6 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
     </style>
-    <!-- Used in RouteList fragment to style the word "to" -->
-    <style name="to">
-        <item name="android:textColor">@color/colorAccent</item>
-        <item name="android:textStyle">bold</item>
-    </style>
 
     <!-- Styles for intro screens -->
     <style name="header">
@@ -41,11 +36,12 @@
         <item name="textAllCaps">true</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/colorYellowAccent</item>
+        <item name="android:layout_margin">10dp</item>
     </style>
 
     <style name="description">
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">#fff</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
 
     <style name="listItem">

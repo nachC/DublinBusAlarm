@@ -18,6 +18,9 @@
         <action
             android:id="@+id/actionRouteListToMaps"
             app:destination="@id/mapsFragment" />
+        <argument
+            android:name="routeName"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/mapsFragment"
@@ -39,5 +42,8 @@
         <action
             android:id="@+id/action_mainScreenToRouteList"
             app:destination="@id/routeListScreenFragment" />
+        <action
+            android:id="@+id/favouriteToMaps"
+            app:destination="@id/mapsFragment" />
     </fragment>
 </navigation>

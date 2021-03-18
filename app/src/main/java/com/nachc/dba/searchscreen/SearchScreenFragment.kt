@@ -22,6 +22,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
+import com.google.android.material.chip.Chip
+import com.google.gson.Gson
 import com.nachc.dba.R
 import com.nachc.dba.databinding.SearchScreenFragmentBinding
 import com.nachc.dba.models.Trip
@@ -79,7 +81,8 @@ class SearchScreenFragment : Fragment() {
         if (trips != null) {
             findNavController().navigate(
                 MainScreenFragmentDirections.actionMainScreenToRouteList(
-                    trips.toTypedArray()
+                    trips.toTypedArray(),
+                    binding.inputLineEditText.text.toString()
                 )
             )
         }
@@ -150,6 +153,28 @@ class SearchScreenFragment : Fragment() {
 
         // set trips to null in case we come from the routeList fragment by pressing the back button
         viewModel.resetTrips()
+
+        /*
+        val chip = Chip(context).apply {
+            isCloseIconVisible = true
+            text = "66B OUTBOUND"
+            setOnClickListener {
+                Log.i(TAG, "chip clicked")
+                val tripString = sharedPref.getString("66B OUTBOUND", null)
+                Log.i(TAG, tripString.toString())
+
+                val favTrip = Gson().fromJson(tripString, Trip::class.java)
+                findNavController().navigate(
+                    MainScreenFragmentDirections.favouriteToMaps(favTrip)
+                )
+            }
+            setOnCloseIconClickListener {
+                Log.i(TAG, "chip close sclicked")
+            }
+        }
+        binding.chipGroup.addView(chip)
+         */
+
 
         binding.permissionBtn.setOnClickListener {
             openPermissionSettings(LOCATION_SETTINGS_CODE)

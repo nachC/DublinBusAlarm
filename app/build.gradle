@@ -100,6 +100,8 @@ dependencies {
 
     implementation 'com.github.AppIntro:AppIntro:6.1.0'
 
+    implementation 'com.google.code.gson:gson:2.8.6'
+
     testImplementation "org.mockito:mockito-inline:$mockitoVersion"
     testImplementation "android.arch.core:core-testing:1.1.1"
     kaptTest "com.google.dagger:dagger-compiler:$daggerVersion"

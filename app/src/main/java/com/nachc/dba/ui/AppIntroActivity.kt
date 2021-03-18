@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.github.appintro.AppIntro
 import com.github.appintro.AppIntroCustomLayoutFragment
+import com.github.appintro.AppIntroPageTransformerType
 import com.nachc.dba.R
 
 class AppIntroActivity : AppIntro() {
@@ -20,6 +21,8 @@ class AppIntroActivity : AppIntro() {
         addSlide(AppIntroCustomLayoutFragment.newInstance(R.layout.intro_first))
         addSlide(AppIntroCustomLayoutFragment.newInstance(R.layout.intro_second))
         addSlide(AppIntroCustomLayoutFragment.newInstance(R.layout.intro_third))
+
+        setTransformer(AppIntroPageTransformerType.Flow)
 
         askForPermissions(
             permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),

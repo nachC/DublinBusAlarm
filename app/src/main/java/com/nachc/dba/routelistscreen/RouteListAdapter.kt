@@ -11,7 +11,7 @@ import com.nachc.dba.R
 import com.nachc.dba.databinding.TripItemBinding
 import com.nachc.dba.models.Trip
 
-class RouteListAdapter(private val tripList: ArrayList<Trip>):
+class RouteListAdapter(private val tripList: ArrayList<Trip>, val favClick: (Int) -> Unit):
     RecyclerView.Adapter<RouteListAdapter.RouteListViewHolder>(), RouteClickListener {
 
     private val TAG = "RouteListAdapter"
@@ -35,6 +35,7 @@ class RouteListAdapter(private val tripList: ArrayList<Trip>):
         holder.view.trip = tripList[position]
         holder.view.listener = this
         holder.view.tripLayout.tag = tripList[position].id
+        holder.view.favButton.setOnClickListener { favClick(position) }
     }
 
     override fun getItemCount() = tripList.size

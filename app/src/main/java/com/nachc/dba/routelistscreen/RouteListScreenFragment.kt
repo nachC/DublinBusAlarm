@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender.SendIntentException
+import android.content.SharedPreferences
 import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
@@ -11,12 +12,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
+import com.google.gson.Gson
 import com.nachc.dba.R
 import com.nachc.dba.databinding.RouteListScreenFragmentBinding
 import com.nachc.dba.models.Trip
@@ -28,9 +32,13 @@ class RouteListScreenFragment : Fragment() {
     private val REQUEST_CHECK_SETTINGS = 214
     private val REQUEST_ENABLE_GPS = 516
 
-    private val listAdapter = RouteListAdapter(arrayListOf())
+    private lateinit var trips: List<Trip>
+    private lateinit var routeName: String
 
-    var trips: List<Trip>? = null
+    private val listAdapter = RouteListAdapter(arrayListOf()) { position ->
+        Toast.makeText(requireContext(), "Comming soon!", Toast.LENGTH_SHORT).show()
+        Log.i(TAG, "added to favourites!")
+    }
 
     private lateinit var binding: RouteListScreenFragmentBinding
 
@@ -48,8 +56,8 @@ class RouteListScreenFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val locationSettingsRequest: LocationSettingsRequest
 
@@ -62,7 +70,6 @@ class RouteListScreenFragment : Fragment() {
 
         LocationServices.getSettingsClient(requireActivity())
             .checkLocationSettings(locationSettingsRequest)
-            .addOnSuccessListener { }
             .addOnFailureListener { e: Exception ->
                 when ((e as ApiException).statusCode) {
                     LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> try {
@@ -80,18 +87,13 @@ class RouteListScreenFragment : Fragment() {
                     )
                 }
             }
-            .addOnCanceledListener {
-                Log.e(
-                    "GPS",
-                    "checkLocationSettings -> onCanceled"
-                )
-            }
 
         // retrieve argument passed to fragment by navigation
         // assign it to local variable and update the recyclerview list
         arguments.let {
             trips = RouteListScreenFragmentArgs.fromBundle(it!!).trips.toList()
-            listAdapter.updateTripList(trips!!)
+            routeName = RouteListScreenFragmentArgs.fromBundle(it).routeName
+            listAdapter.updateTripList(trips)
         }
 
         binding.routeList.apply {

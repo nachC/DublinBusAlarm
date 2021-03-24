@@ -47,7 +47,7 @@
     <string name="arrived_message">Arrived to Stop</string>
 
     <!-- MainScreenFragment -->
-    <string name="searchTab">search bus</string>
+    <string name="searchTab">search</string>
     <string name="newsTab">news</string>
 
     <!-- SettingsFragment -->

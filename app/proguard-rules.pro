@@ -12,6 +12,12 @@
 #   public *;
 #}
 
+-keep class com.nachc.dba.models.Trip {*; }
+-keep class com.nachc.dba.models.CoordinatePoint {*; }
+-keep class com.nachc.dba.models.Favourite {*; }
+-keep class com.nachc.dba.models.Session {*; }
+-keep class com.nachc.dba.models.Stop {*; }
+
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
 -keepattributes SourceFile,LineNumberTable

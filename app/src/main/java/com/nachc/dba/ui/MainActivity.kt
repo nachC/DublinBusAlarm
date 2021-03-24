@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
 
         sharedPref = SharedPreferencesHelper(applicationContext)
 
-        if (/*!sharedPref.hasShownIntro()*/true) {
+        if (!sharedPref.hasShownIntro()) {
             val appIntroIntent = Intent(applicationContext, AppIntroActivity::class.java)
             startActivity(appIntroIntent)
         }

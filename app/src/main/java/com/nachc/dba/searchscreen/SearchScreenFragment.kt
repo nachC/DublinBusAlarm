@@ -37,11 +37,6 @@ import java.util.*
 
 class SearchScreenFragment : Fragment() {
 
-    /**
-     * TODO:
-     *  - Fix crash when double clicking SEARCH button
-     * */
-
     private val TAG = "SearchScreenFragment"
     private val APP_INTRO_KEY = "SHOWN_INTRO"
     private val LOCATION_SETTINGS_CODE = 0
@@ -207,7 +202,6 @@ class SearchScreenFragment : Fragment() {
         }
          */
         binding.searchBtn.setOnClickListener {
-            Log.i(TAG, "CLICK")
             if (!isConnected) {
                 Toast.makeText(
                     context,
@@ -215,7 +209,6 @@ class SearchScreenFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
             } else if (!loading) {
-                Log.i(TAG, "CLICK if not loading")
                 viewModel.search(binding.inputLineEditText.text.toString().toLowerCase(Locale.ROOT))
             }
         }

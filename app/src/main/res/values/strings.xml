@@ -63,7 +63,7 @@
 
     <string name="intro_second_header">Location</string>
     <string name="intro_second_description">"In order for DBA to do its job, it needs to know your location. It will be used to display your position on the map and know when you've arrived at your destination.
-        \n\nPlease, accept the location permission request on the next screen."</string>
+        \nPlease, accept the location permission request on the next screen."</string>
 
     <string name="intro_third_header">Almost there!</string>
     <string name="intro_third_description">Some device manufacturers implement their own battery optimizations

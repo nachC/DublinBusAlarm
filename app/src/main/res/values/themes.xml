@@ -31,7 +31,7 @@
 
     <!-- Styles for intro screens -->
     <style name="header">
-        <item name="android:textSize">40sp</item>
+        <item name="android:textSize">36sp</item>
         <item name="android:textStyle">bold</item>
         <item name="textAllCaps">true</item>
         <item name="android:gravity">center</item>

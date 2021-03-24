@@ -21,7 +21,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.gson.Gson
-import com.nachc.dba.MainViewModel
+import com.nachc.dba.sharedviewmodel.MainViewModel
 import com.nachc.dba.R
 import com.nachc.dba.databinding.RouteListScreenFragmentBinding
 import com.nachc.dba.models.Trip

@@ -7,7 +7,7 @@
     android:background="@color/colorPrimaryDark"
     tools:context=".ui.AlarmLockScreenActivity">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/stopButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
         android:textSize="50sp"
         android:textColor="@color/colorAccent"/>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/stopAlarmLockScreenBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,7 +28,6 @@
         android:text="@string/stop_button"
         android:layout_marginTop="10dp"
         android:padding="10dp"
-        android:background="@drawable/btn_search_custom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/stopButton" />

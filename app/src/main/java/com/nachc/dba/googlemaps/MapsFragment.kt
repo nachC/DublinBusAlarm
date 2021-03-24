@@ -7,7 +7,6 @@ import android.app.Notification
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentSender
-import android.content.SharedPreferences
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.location.Location
 import android.os.Bundle
@@ -20,7 +19,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.preference.PreferenceManager
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -33,10 +31,7 @@ import com.nachc.dba.R
 import com.nachc.dba.models.Session
 import com.nachc.dba.models.Trip
 import com.nachc.dba.receivers.AlarmReceiver
-import com.nachc.dba.util.drawPolylines
-import com.nachc.dba.util.drawStopMarkers
-import com.nachc.dba.util.startAlarm
-import com.nachc.dba.util.startLocationService
+import com.nachc.dba.util.*
 import java.util.*
 
 @SuppressLint("MissingPermission")
@@ -48,13 +43,12 @@ class MapsFragment : Fragment() {
     private val REQUEST_CHECK_SETTINGS = 526
     private val ALARM_DELAY = 500
     private val NOTIFICATION_DISMISS = "dismiss"
-    private val MAP_DISTANCE_KEY = "MAP_DISTANCE"
 
     private var TRIGGER_DISTANCE_TO_STOP: Float = 100f
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
-    private lateinit var sharedPref: SharedPreferences
+    private lateinit var sharedPref: SharedPreferencesHelper
 
     // session variables to write to DB
     private var sessionUserOriginCoords = ArrayList<Double>()
@@ -161,9 +155,7 @@ class MapsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        sharedPref = PreferenceManager.getDefaultSharedPreferences(requireContext())
-
+        sharedPref = SharedPreferencesHelper(requireContext())
         return inflater.inflate(R.layout.fragment_maps, container, false)
     }
 
@@ -178,7 +170,7 @@ class MapsFragment : Fragment() {
             trip = MapsFragmentArgs.fromBundle(it!!).trip
         }
 
-        TRIGGER_DISTANCE_TO_STOP = sharedPref.getFloat(MAP_DISTANCE_KEY, 100f)
+        TRIGGER_DISTANCE_TO_STOP = sharedPref.getTriggerDistToStopFromSettings()
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
@@ -249,7 +241,7 @@ class MapsFragment : Fragment() {
         }
 
         val builder = LocationSettingsRequest.Builder()
-            .addLocationRequest(locationRequest!!)
+            .addLocationRequest(locationRequest)
 
         val client: SettingsClient = LocationServices.getSettingsClient(requireActivity())
         val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())

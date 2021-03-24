@@ -1,10 +1,9 @@
 package com.nachc.dba.searchscreen
 
 import android.Manifest
-import android.app.AlertDialog
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.*
 import android.os.Bundle
@@ -15,36 +14,33 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.preference.PreferenceManager
 import com.google.android.material.chip.Chip
 import com.google.gson.Gson
-import com.nachc.dba.MainViewModel
+import com.nachc.dba.sharedviewmodel.MainViewModel
 import com.nachc.dba.R
 import com.nachc.dba.databinding.SearchScreenFragmentBinding
 import com.nachc.dba.models.Favourite
 import com.nachc.dba.models.Trip
 import com.nachc.dba.ui.MainScreenFragmentDirections
+import com.nachc.dba.util.SharedPreferencesHelper
 import com.nachc.dba.util.isInternetAvailable
-import com.nachc.dba.util.openPermissionSettings
-import com.nachc.dba.util.startAlarm
 import java.util.*
 
 class SearchScreenFragment : Fragment() {
 
     private val TAG = "SearchScreenFragment"
-    private val APP_INTRO_KEY = "SHOWN_INTRO"
     private val LOCATION_SETTINGS_CODE = 0
     private val BATTERY_OPT_SETTINGS_CODE = 1
     private val FINE_LOCATION = 1 // request code for fine location access permission
 
-    //INJECT THIS
-    private lateinit var sharedPref: SharedPreferences
+    private lateinit var sharedPref: SharedPreferencesHelper
 
     private var isConnected: Boolean = false // flag for internet connectivity
     private var loading: Boolean = false
@@ -123,7 +119,7 @@ class SearchScreenFragment : Fragment() {
             inflater, R.layout.search_screen_fragment, container, false
         )
 
-        sharedPref = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        sharedPref = SharedPreferencesHelper(requireContext())
 
         // Set the ViewModel for databinding - this allows the bound layout access to all of the
         // data in the VieWModel
@@ -138,9 +134,8 @@ class SearchScreenFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val shownIntro = sharedPref.getBoolean(APP_INTRO_KEY, false)
-        if (!shownIntro) {
-            sharedPref.edit().putBoolean(APP_INTRO_KEY, true).apply()
+        if (!sharedPref.hasShownIntro()) {
+            sharedPref.setShownIntro(true)
             // check if we have location permissions
             if (checkSelfPermission(
                     requireContext(),
@@ -167,8 +162,7 @@ class SearchScreenFragment : Fragment() {
          * ***user sharedpreferences*** key=SHOWN_INTRO
          * */
 
-        val shownIntro = sharedPref.getBoolean(APP_INTRO_KEY, false)
-        if (shownIntro) {
+        if (sharedPref.hasShownIntro()) {
             // check if we have location permissions
             if (checkSelfPermission(
                     requireContext(),
@@ -191,7 +185,7 @@ class SearchScreenFragment : Fragment() {
         viewModel.getAllFavs()
 
         binding.permissionBtn.setOnClickListener {
-            openPermissionSettings(requireActivity(), LOCATION_SETTINGS_CODE)
+            openPermissionSettings(LOCATION_SETTINGS_CODE)
         }
         binding.allowLocationBtn.setOnClickListener {
             requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), FINE_LOCATION)
@@ -254,10 +248,21 @@ class SearchScreenFragment : Fragment() {
         }
     }
 
+    // method called when clicking the permission button
+    // we send the user to the OS settings screen to set location permission manually
+    fun openPermissionSettings(requestCode: Int) {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        val uri = Uri.fromParts("package", activity?.packageName, null)
+        intent.data = uri
+        // we'll handle the result on onActivityResult
+        startActivityForResult(intent, requestCode)
+    }
+
     // if we come from the SETTINGS screen and user provided location permission
     // then we can search
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        Log.i(TAG, "onActivityResult")
         if (requestCode == LOCATION_SETTINGS_CODE) {
             Log.i(TAG, "onActivityResult in fragment request code 0")
             if (checkSelfPermission(

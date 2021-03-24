@@ -64,7 +64,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/testAlarmHelp"
                 android:textColor="@color/colorAccent"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"/>
 
         </LinearLayout>
 

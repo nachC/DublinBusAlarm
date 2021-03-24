@@ -9,7 +9,7 @@
 
         <variable
             name="mainViewModel"
-            type="com.nachc.dba.MainViewModel" />
+            type="com.nachc.dba.sharedviewmodel.MainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

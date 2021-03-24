@@ -1,8 +1,7 @@
-package com.nachc.dba
+package com.nachc.dba.sharedviewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import android.util.Log
 import androidx.lifecycle.*
 import com.nachc.dba.models.Favourite
 import com.nachc.dba.models.Trip

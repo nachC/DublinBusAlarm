@@ -18,15 +18,17 @@
         android:theme="@style/Theme.DublinBusAlarm"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guideLine">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/header_message"
                 style="@style/header"
                 android:layout_width="wrap_content"
@@ -36,12 +38,12 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/first_description"
                 style="@style/description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="25dp"
+                android:layout_marginBottom="25dp"
                 android:width="300dp"
                 android:text="@string/intro_first_description"
                 android:textAlignment="center"
@@ -56,13 +58,13 @@
                 android:src="@drawable/bustopbg"
                 android:contentDescription="@string/busStopBGContentDescription"/>
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/second_description"
                 style="@style/description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="25dp"
-                android:width="325dp"
+                android:layout_marginTop="15dp"
+                android:width="300dp"
                 android:gravity="center"
                 android:text="@string/intro_first_description2"
                 app:layout_constraintEnd_toEndOf="parent"

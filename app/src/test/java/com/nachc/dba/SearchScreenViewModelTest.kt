@@ -1,30 +1,8 @@
 package com.nachc.dba
 
-import android.app.Application
-import android.util.Log
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.MutableLiveData
-import com.nachc.dba.di.DaggerSearchViewModelComponent
-import com.nachc.dba.models.Trip
-import com.nachc.dba.repository.RouteRepository
-import com.nachc.dba.searchscreen.SearchScreenViewModel
-import io.reactivex.rxjava3.android.plugins.RxAndroidPlugins
-import io.reactivex.rxjava3.core.Scheduler
-import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.internal.schedulers.ExecutorScheduler
-import io.reactivex.rxjava3.plugins.RxJavaPlugins
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
-import java.util.concurrent.Executor
-
 class SearchScreenViewModelTest {
 
-    @get:Rule
+    /*@get:Rule
     var rule = InstantTaskExecutorRule() // allows to execute a task and instantly get a response (synchronously)
 
     @Mock
@@ -117,5 +95,5 @@ class SearchScreenViewModelTest {
 
         RxJavaPlugins.setInitNewThreadSchedulerHandler { immediate }
         RxAndroidPlugins.setInitMainThreadSchedulerHandler { immediate }
-    }
+    }*/
 }

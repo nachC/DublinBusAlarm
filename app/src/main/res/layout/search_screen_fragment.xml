@@ -5,12 +5,11 @@
     tools:context=".searchscreen.SearchScreenFragment">
 
     <data>
-
         <import type="android.view.View" />
 
         <variable
-            name="searchScreenViewModel"
-            type="com.nachc.dba.searchscreen.SearchScreenViewModel" />
+            name="mainViewModel"
+            type="com.nachc.dba.MainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -119,7 +118,7 @@
             android:id="@+id/permissionBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="150dp"
             android:text="@string/settings_button"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
@@ -130,7 +129,7 @@
             android:id="@+id/allowLocationBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="150dp"
             android:text="@string/allow_button"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
@@ -152,41 +151,16 @@
 
         <TextView
             android:id="@+id/loadError"
-            style="@style/Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="150dp"
             android:text="@string/routeError"
             android:textColor="@color/design_default_color_error"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchLinearLayout" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-            <Button
-                android:id="@+id/testAlarmBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:background="@color/colorPrimary"
-                android:text="@string/testAlarmBtn"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/testAlarmHelp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/testAlarmHelp"
-                android:textColor="@color/colorAccent"
-                android:textStyle="bold" />
-
-        </LinearLayout>
+            app:layout_constraintTop_toBottomOf="@+id/searchLinearLayout"
+            style="@style/Text"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

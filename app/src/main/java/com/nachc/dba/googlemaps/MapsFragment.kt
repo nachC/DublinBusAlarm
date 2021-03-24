@@ -7,6 +7,7 @@ import android.app.Notification
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentSender
+import android.content.SharedPreferences
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.location.Location
 import android.os.Bundle
@@ -18,8 +19,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceManager
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -45,14 +46,15 @@ class MapsFragment : Fragment() {
     private val FIRST_CAMERA_ZOOM = 13F
     private val MAX_ZOOM = 15F
     private val REQUEST_CHECK_SETTINGS = 526
-    private val TRIGGER_DISTANCE_TO_STOP = 100F
     private val ALARM_DELAY = 500
     private val NOTIFICATION_DISMISS = "dismiss"
+    private val MAP_DISTANCE_KEY = "MAP_DISTANCE"
+
+    private var TRIGGER_DISTANCE_TO_STOP: Float = 100f
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
-
-    private val viewModel: MapsViewModel by viewModels()
+    private lateinit var sharedPref: SharedPreferences
 
     // session variables to write to DB
     private var sessionUserOriginCoords = ArrayList<Double>()
@@ -159,6 +161,9 @@ class MapsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(requireContext())
+
         return inflater.inflate(R.layout.fragment_maps, container, false)
     }
 
@@ -172,6 +177,8 @@ class MapsFragment : Fragment() {
         arguments.let {
             trip = MapsFragmentArgs.fromBundle(it!!).trip
         }
+
+        TRIGGER_DISTANCE_TO_STOP = sharedPref.getFloat(MAP_DISTANCE_KEY, 100f)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
@@ -235,7 +242,7 @@ class MapsFragment : Fragment() {
     }
 
     private fun createLocationRequest() {
-        val locationRequest = LocationRequest.create()?.apply {
+        val locationRequest = LocationRequest.create().apply {
             interval = 3000
             fastestInterval = 1000
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
@@ -269,7 +276,7 @@ class MapsFragment : Fragment() {
                         REQUEST_CHECK_SETTINGS
                     )
                 } catch (sendEx: IntentSender.SendIntentException) {
-                    Log.e(TAG, sendEx.message)
+                    Log.e(TAG, sendEx.message!!)
                 }
             }
         }

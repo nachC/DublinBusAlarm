@@ -1,38 +1,36 @@
-package com.nachc.dba.searchscreen
+package com.nachc.dba
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.nachc.dba.di.DaggerSearchViewModelComponent
+import androidx.lifecycle.*
+import com.nachc.dba.models.Favourite
 import com.nachc.dba.models.Trip
+import com.nachc.dba.repository.FavouriteRepository
 import com.nachc.dba.repository.RouteRepository
+import com.nachc.dba.room.AppDatabase
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.observers.DisposableSingleObserver
 import io.reactivex.rxjava3.schedulers.Schedulers
-import javax.inject.Inject
+import kotlinx.coroutines.launch
 
-class SearchScreenViewModel : ViewModel() {
+class MainViewModel(application: Application): AndroidViewModel(application) {
 
-    private val TAG = "SearchScreenViewModel"
+    private val TAG = "MainViewModel"
+
+    private val routeRepository = RouteRepository()
+    private val favouriteRepository = FavouriteRepository(AppDatabase.getInstance(getApplication()))
 
     val loading by lazy { MutableLiveData<Boolean>() }
     val loadError by lazy { MutableLiveData<Pair<Boolean, String>>() }
     val validInput by lazy { MutableLiveData<Pair<Boolean, String>>() }
     val trips by lazy { MutableLiveData<List<Trip>>() }
+    val routeName by lazy { MutableLiveData<String>() }
+    val favourites by lazy { MutableLiveData<List<Favourite>>() }
+    val latestID by lazy { MutableLiveData<Long>() }
 
     private val disposable = CompositeDisposable()
-
-    @Inject
-    lateinit var routeRepository: RouteRepository
-
-    private var injected = false
-
-    init {
-        if (!injected) {
-            DaggerSearchViewModelComponent.create().inject(this)
-        }
-    }
 
     // check for emptiness and regex match
     // set validInput value to a Pair(error: Boolean, errorMessage: String)
@@ -73,12 +71,46 @@ class SearchScreenViewModel : ViewModel() {
         }
     }
 
+    fun resetTrips() {
+        trips.value = null
+        routeName.value = ""
+    }
+
+    fun getAllFavs() {
+        viewModelScope.launch {
+            favourites.value = favouriteRepository.getAllFavs()
+        }
+    }
+
+    fun getFavById(id: String) {
+        viewModelScope.launch {
+            favouriteRepository.getFavById(id)
+        }
+    }
+
+    fun saveFavourite(id: String, direction: String, trip: String) {
+        viewModelScope.launch {
+            val fav = Favourite(id, direction, trip)
+            latestID.value = favouriteRepository.saveFav(fav)
+            getAllFavs()
+        }
+    }
+
+    fun deleteFavourite(favourite: Favourite) {
+        viewModelScope.launch {
+            favouriteRepository.deleteFav(favourite)
+            getAllFavs()
+        }
+    }
+
+    fun deleteFavouriteById(id: String) {
+        viewModelScope.launch {
+            favouriteRepository.deleteFavById(id)
+        }
+    }
+
     override fun onCleared() {
         super.onCleared()
         disposable.clear()
-    }
-
-    fun resetTrips() {
-        trips.value = null
     }
 }

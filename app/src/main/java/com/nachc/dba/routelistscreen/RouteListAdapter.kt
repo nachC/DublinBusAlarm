@@ -11,12 +11,12 @@ import com.nachc.dba.R
 import com.nachc.dba.databinding.TripItemBinding
 import com.nachc.dba.models.Trip
 
-class RouteListAdapter(private val tripList: ArrayList<Trip>, val favClick: (Int) -> Unit):
+class RouteListAdapter(private val tripList: ArrayList<Trip>, val favClick: (Int, String) -> Unit):
     RecyclerView.Adapter<RouteListAdapter.RouteListViewHolder>(), RouteClickListener {
 
     private val TAG = "RouteListAdapter"
 
-    fun updateTripList(newTripList: List<Trip>) {
+    fun updateTripList(newTripList: List<Trip> ) {
         Log.i(TAG, "tripList cleared in adapter")
         tripList.clear()
         tripList.addAll(newTripList)
@@ -35,7 +35,15 @@ class RouteListAdapter(private val tripList: ArrayList<Trip>, val favClick: (Int
         holder.view.trip = tripList[position]
         holder.view.listener = this
         holder.view.tripLayout.tag = tripList[position].id
-        holder.view.favButton.setOnClickListener { favClick(position) }
+        holder.view.favButton.apply{
+            setOnClickListener {
+                favClick(position, it.tag as String)
+                /*when (it.tag){
+                    "delete" -> it.tag = "save"
+                    "save" -> it.tag = "delete"
+                }*/
+            }
+        }
     }
 
     override fun getItemCount() = tripList.size
@@ -43,7 +51,6 @@ class RouteListAdapter(private val tripList: ArrayList<Trip>, val favClick: (Int
     override fun onClick(v: View) {
         for (trip in tripList) {
             if (v.tag == trip.id) {
-                Log.i(TAG, trip.id)
                 val action = RouteListScreenFragmentDirections.actionRouteListToMaps(trip)
                 Navigation.findNavController(v).navigate(action)
             }

@@ -36,10 +36,11 @@
     <string name="header_text">Routes might change during bank holidays, celebration periods, etc. You can find information in the Dublin Bus News tab on the main screen.</string>
     <string name="routelist_fragment_label">SELECT YOUR TRIP</string>
     <string name="title_activity_alarm_lock_screen">AlarmLockScreen</string>
-    <string name="favBtn">add to favourites</string>
     <string name="origin"><b>Origin:</b> %s</string>
     <string name="destination"><b>Destination:</b> %s</string>
     <string name="num_of_stops"><b>Total stops:</b> %s</string>
+    <string name="add_fav_btn">add to favourites</string>
+    <string name="delete_fav_btn">delete favourite</string>
 
     <!-- AlarmLockScreenActivity -->
     <string name="stop_button">dismiss alarm</string>
@@ -47,7 +48,10 @@
 
     <!-- MainScreenFragment -->
     <string name="searchTab">search bus</string>
-    <string name="newsTab">dublin bus news</string>
+    <string name="newsTab">news</string>
+
+    <!-- SettingsFragment -->
+    <string name="distanceSliderDescription">Adjust the distance (in meters) from the stop at which you want the alarm to go off</string>
 
     <!-- App Intro -->
     <string name="intro_first_header">Welcome</string>
@@ -66,7 +70,7 @@
         that can prevent the alarm from ringing.\n\n
         DBA can\'t detect these proprietary settings, so it\'s recommended that you
 test the alarm to make sure everything is OK.\n
-You\'ll be able to test the alarm on the main screen.
+You\'ll be able to test the alarm on the Settings tab.
     </string>
 
     <!-- images -->

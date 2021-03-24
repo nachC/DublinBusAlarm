@@ -12,15 +12,9 @@
         <action
             android:id="@+id/actionRouteListToMainScreen"
             app:destination="@id/mainScreenFragment" />
-        <argument
-            android:name="trips"
-            app:argType="com.nachc.dba.models.Trip[]" />
         <action
             android:id="@+id/actionRouteListToMaps"
             app:destination="@id/mapsFragment" />
-        <argument
-            android:name="routeName"
-            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/mapsFragment"

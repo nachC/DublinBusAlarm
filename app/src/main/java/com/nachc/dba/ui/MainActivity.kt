@@ -30,10 +30,9 @@ class MainActivity : AppCompatActivity() {
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this)
         val shownIntro = sharedPref.getBoolean(APP_INTRO_KEY, false)
-
         if (!shownIntro) {
             val appIntroIntent = Intent(applicationContext, AppIntroActivity::class.java)
-            startActivityForResult(appIntroIntent, 101)
+            startActivity(appIntroIntent)
         }
 
         setContentView(R.layout.activity_main)

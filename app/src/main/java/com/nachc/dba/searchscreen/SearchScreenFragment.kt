@@ -18,44 +18,54 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.google.android.material.chip.Chip
 import com.google.gson.Gson
+import com.nachc.dba.MainViewModel
 import com.nachc.dba.R
 import com.nachc.dba.databinding.SearchScreenFragmentBinding
+import com.nachc.dba.models.Favourite
 import com.nachc.dba.models.Trip
 import com.nachc.dba.ui.MainScreenFragmentDirections
 import com.nachc.dba.util.isInternetAvailable
+import com.nachc.dba.util.openPermissionSettings
 import com.nachc.dba.util.startAlarm
 import java.util.*
 
 class SearchScreenFragment : Fragment() {
 
+    /**
+     * TODO:
+     *  - Fix crash when double clicking SEARCH button
+     * */
+
     private val TAG = "SearchScreenFragment"
     private val APP_INTRO_KEY = "SHOWN_INTRO"
     private val LOCATION_SETTINGS_CODE = 0
     private val BATTERY_OPT_SETTINGS_CODE = 1
-
     private val FINE_LOCATION = 1 // request code for fine location access permission
 
+    //INJECT THIS
     private lateinit var sharedPref: SharedPreferences
 
     private var isConnected: Boolean = false // flag for internet connectivity
-    private var alarmOnGoing: Boolean = false
+    private var loading: Boolean = false
 
-    private val viewModel: SearchScreenViewModel by viewModels()
+    private val viewModel: MainViewModel by activityViewModels()
     private lateinit var binding: SearchScreenFragmentBinding
 
     // Observer to be aware of loading process
     private val loadingObserver = Observer<Boolean> { isLoading ->
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        loading = isLoading
         if (isLoading) {
             binding.loadError.visibility = View.GONE
         }
     }
+
     // Observer to be aware of any error from the backend
     private val errorObserver = Observer<Pair<Boolean, String>> { isError ->
         if (isError.first) {
@@ -65,6 +75,7 @@ class SearchScreenFragment : Fragment() {
             View.GONE
         }
     }
+
     // Observer to be aware of input validation results
     // as this is the first thing to check, we'll hide the keyboard here
     private val validInputObserver = Observer<Pair<Boolean, String>> { isValidInput ->
@@ -75,16 +86,37 @@ class SearchScreenFragment : Fragment() {
             binding.inputLineEditText.error = isValidInput.second
         }
     }
+
     // Observer to be aware of the trips being set
     private val tripsObserver = Observer<List<Trip>> { trips ->
         // trips will be set to null on onViewCreated because we could be coming back from routelist fragment
         if (trips != null) {
-            findNavController().navigate(
-                MainScreenFragmentDirections.actionMainScreenToRouteList(
-                    trips.toTypedArray(),
-                    binding.inputLineEditText.text.toString()
-                )
-            )
+            viewModel.routeName.value = binding.inputLineEditText.text.toString()
+            findNavController().navigate(MainScreenFragmentDirections.actionMainScreenToRouteList())
+        }
+    }
+    // Observer for favourites
+
+    private val favouritesObserver = Observer<List<Favourite>> { favourites ->
+        binding.chipGroup.removeAllViews()
+        for (fav in favourites) {
+            val chip = Chip(context).apply {
+                isCloseIconVisible = true
+                text = fav.id
+                setOnClickListener {
+                    val tripString = fav.trip
+                    val favTrip = Gson().fromJson(tripString, Trip::class.java)
+                    findNavController().navigate(
+                        MainScreenFragmentDirections.favouriteToMaps(favTrip)
+                    )
+                }
+                setOnCloseIconClickListener {
+                    viewModel.deleteFavouriteById(fav.id)
+                    binding.chipGroup.removeView(it)
+                    Toast.makeText(requireContext(), "Favourite deleted", Toast.LENGTH_SHORT).show()
+                }
+            }
+            binding.chipGroup.addView(chip)
         }
     }
 
@@ -100,7 +132,7 @@ class SearchScreenFragment : Fragment() {
 
         // Set the ViewModel for databinding - this allows the bound layout access to all of the
         // data in the VieWModel
-        binding.searchScreenViewModel = viewModel
+        binding.mainViewModel = viewModel
 
         // Specify the current activity as the lifecycle owner of the binding. This is used so that
         // the binding can observe LiveData updates
@@ -115,7 +147,11 @@ class SearchScreenFragment : Fragment() {
         if (!shownIntro) {
             sharedPref.edit().putBoolean(APP_INTRO_KEY, true).apply()
             // check if we have location permissions
-            if (checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
                 binding.searchBtn.isEnabled = true
             } else {
                 // request location permissions
@@ -139,7 +175,11 @@ class SearchScreenFragment : Fragment() {
         val shownIntro = sharedPref.getBoolean(APP_INTRO_KEY, false)
         if (shownIntro) {
             // check if we have location permissions
-            if (checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
                 binding.searchBtn.isEnabled = true
             } else {
                 // request location permissions
@@ -153,31 +193,10 @@ class SearchScreenFragment : Fragment() {
 
         // set trips to null in case we come from the routeList fragment by pressing the back button
         viewModel.resetTrips()
-
-        /*
-        val chip = Chip(context).apply {
-            isCloseIconVisible = true
-            text = "66B OUTBOUND"
-            setOnClickListener {
-                Log.i(TAG, "chip clicked")
-                val tripString = sharedPref.getString("66B OUTBOUND", null)
-                Log.i(TAG, tripString.toString())
-
-                val favTrip = Gson().fromJson(tripString, Trip::class.java)
-                findNavController().navigate(
-                    MainScreenFragmentDirections.favouriteToMaps(favTrip)
-                )
-            }
-            setOnCloseIconClickListener {
-                Log.i(TAG, "chip close sclicked")
-            }
-        }
-        binding.chipGroup.addView(chip)
-         */
-
+        viewModel.getAllFavs()
 
         binding.permissionBtn.setOnClickListener {
-            openPermissionSettings(LOCATION_SETTINGS_CODE)
+            openPermissionSettings(requireActivity(), LOCATION_SETTINGS_CODE)
         }
         binding.allowLocationBtn.setOnClickListener {
             requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), FINE_LOCATION)
@@ -187,28 +206,16 @@ class SearchScreenFragment : Fragment() {
             showDataSavedDialog()
         }
          */
-        binding.testAlarmBtn.setOnClickListener {
-            if (!alarmOnGoing) {
-                alarmOnGoing = true
-                startAlarm(requireContext(), 500)
-            }
-        }
-        binding.testAlarmHelp.setOnClickListener {
-            AlertDialog.Builder(requireContext()).apply {
-                setTitle(R.string.testAlarmHelpDialogTitle)
-                setMessage(R.string.testAlarmHelpDialogText)
-                setPositiveButton(R.string.settings) { _, _ -> openPermissionSettings(BATTERY_OPT_SETTINGS_CODE) }
-                setNegativeButton(android.R.string.cancel, null)
-            }.show()
-        }
         binding.searchBtn.setOnClickListener {
+            Log.i(TAG, "CLICK")
             if (!isConnected) {
                 Toast.makeText(
                     context,
                     "Please, check your internet connection",
                     Toast.LENGTH_SHORT
                 ).show()
-            } else {
+            } else if (!loading) {
+                Log.i(TAG, "CLICK if not loading")
                 viewModel.search(binding.inputLineEditText.text.toString().toLowerCase(Locale.ROOT))
             }
         }
@@ -218,6 +225,7 @@ class SearchScreenFragment : Fragment() {
         viewModel.loading.observe(viewLifecycleOwner, loadingObserver)
         viewModel.loadError.observe(viewLifecycleOwner, errorObserver)
         viewModel.trips.observe(viewLifecycleOwner, tripsObserver)
+        viewModel.favourites.observe(viewLifecycleOwner, favouritesObserver)
     }
 
     // here we handle the result of calling requestPermissions
@@ -253,23 +261,17 @@ class SearchScreenFragment : Fragment() {
         }
     }
 
-    // method called when clicking the permission button
-    // we send the user to the OS settings screen to set location permission manually
-    fun openPermissionSettings(requestCode: Int) {
-            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-            val uri = Uri.fromParts("package", activity?.packageName, null)
-            intent.data = uri
-            // we'll handle the result on onActivityResult
-            startActivityForResult(intent, requestCode)
-    }
-
     // if we come from the SETTINGS screen and user provided location permission
     // then we can search
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == LOCATION_SETTINGS_CODE) {
             Log.i(TAG, "onActivityResult in fragment request code 0")
-            if (checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
                 binding.permissionBtn.visibility = View.GONE
                 binding.searchBtn.isEnabled = true
                 Toast.makeText(this.context, "You can search now", Toast.LENGTH_SHORT).show()
@@ -278,9 +280,6 @@ class SearchScreenFragment : Fragment() {
                 binding.searchBtn.isEnabled = false
                 requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), FINE_LOCATION)
             }
-        }
-        else if (requestCode == BATTERY_OPT_SETTINGS_CODE) {
-            Log.i(TAG, "onActivityResult in fragment request code 101")
         }
     }
 

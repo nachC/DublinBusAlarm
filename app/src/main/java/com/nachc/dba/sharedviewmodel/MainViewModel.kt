@@ -1,6 +1,7 @@
 package com.nachc.dba.sharedviewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.*
 import com.nachc.dba.models.Favourite
@@ -78,6 +79,7 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     fun getAllFavs() {
         viewModelScope.launch {
             favourites.value = favouriteRepository.getAllFavs()
+            Log.i(TAG, "ViewModel getAllFavs")
         }
     }
 
@@ -105,6 +107,7 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     fun deleteFavouriteById(id: String) {
         viewModelScope.launch {
             favouriteRepository.deleteFavById(id)
+            getAllFavs()
         }
     }
 

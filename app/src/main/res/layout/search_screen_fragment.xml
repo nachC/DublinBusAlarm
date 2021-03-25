@@ -6,9 +6,10 @@
 
     <data>
         <import type="android.view.View" />
+
         <variable
-            name="searchScreenViewModel"
-            type="com.nachc.dba.searchscreen.SearchScreenViewModel" />
+            name="mainViewModel"
+            type="com.nachc.dba.sharedviewmodel.MainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,46 +18,83 @@
         android:layout_height="match_parent"
         android:background="@color/colorPrimaryDark">
 
-        <LinearLayout
-            android:id="@+id/searchLinearLayout"
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/backgroundImage">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp">
+
+            </com.google.android.material.chip.ChipGroup>
+
+        </HorizontalScrollView>
+
+        <ImageView
+            android:id="@+id/backgroundImage"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="1:1"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/busStopBGContentDescription"
+            android:padding="10dp"
+            android:src="@drawable/bustopbg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/searchFieldBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/custom_search_box"
-            android:orientation="horizontal"
-            android:padding="4dp"
+            android:hint="@string/inputLineHint"
+            app:boxStrokeColor="@color/colorYellowAccent"
+            app:hintTextColor="@color/colorAccent"
+            app:startIconDrawable="@drawable/ic_bus_vector"
+            app:startIconTint="@color/colorYellowAccent"
+            app:layout_constraintBottom_toTopOf="@id/searchBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputLineEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/searchBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="75dp"
+            android:text="@string/searchBtn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/searchButton"/>
+
+
+        <LinearLayout
+            android:id="@+id/searchLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <EditText
-                android:id="@+id/inputLineEditText"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:background="@drawable/custom_input_edittext"
-                android:drawableStart="@drawable/ic_bus_vector"
-                android:drawablePadding="8dp"
-                android:ems="10"
-                android:hint="@string/inputLineHint"
-                android:importantForAutofill="no"
-                android:inputType="textShortMessage"
-                android:paddingStart="12dp"
-                android:paddingTop="12dp"
-                android:paddingEnd="12dp"
-                android:paddingBottom="8dp"
-                android:textAlignment="textStart"
-                android:textColor="#000000" />
-
-            <Button
-                android:id="@+id/searchBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="2dp"
-                android:background="@drawable/btn_search_custom"
-                android:text="@string/searchBtn" />
         </LinearLayout>
 
         <ProgressBar
@@ -87,7 +125,7 @@
             android:id="@+id/permissionBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="150dp"
             android:text="@string/settings_button"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
@@ -98,7 +136,7 @@
             android:id="@+id/allowLocationBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="150dp"
             android:text="@string/allow_button"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
@@ -120,41 +158,16 @@
 
         <TextView
             android:id="@+id/loadError"
-            style="@style/Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="150dp"
             android:text="@string/routeError"
             android:textColor="@color/design_default_color_error"
-            android:layout_marginTop="100dp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchLinearLayout" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-            <Button
-                android:id="@+id/testAlarmBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:background="@color/colorPrimary"
-                android:text="@string/testAlarmBtn"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/testAlarmHelp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/testAlarmHelp"
-                android:textStyle="bold"
-                android:textColor="@color/colorAccent" />
-
-        </LinearLayout>
+            app:layout_constraintTop_toBottomOf="@+id/searchLinearLayout"
+            style="@style/Text"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,11 +1,7 @@
 package com.nachc.dba.util
 
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.Network
-import android.net.NetworkCapabilities
-import android.net.NetworkRequest
-import android.webkit.WebView
+import android.net.*
 
 fun isInternetAvailable(context: Context, callback: (Boolean) -> Unit) {
     // Check for network connectivity. We'll allow the search functionality only if a connection is available

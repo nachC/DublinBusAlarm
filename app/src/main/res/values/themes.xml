@@ -1,36 +1,47 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
-    <style name="Theme.DublinBusAlarm" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.DublinBusAlarm" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+    </style>
+
+    <style name="searchButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="backgroundTint">@color/colorYellowAccent</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="searchFieldBox" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="android:minWidth">130dp</item>
+        <item name="boxBackgroundColor">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/colorYellowAccent</item>
+        <item name="android:textColorHint">@color/colorYellowAccent</item>
+    </style>
+
+    <style name="tripCard" parent="Widget.MaterialComponents.CardView">
     </style>
 
     <style name="Text">
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
     </style>
-    <!-- Used in RouteList fragment to style the word "to" -->
-    <style name="to">
-        <item name="android:textColor">@color/colorAccent</item>
-        <item name="android:textStyle">bold</item>
-    </style>
 
     <!-- Styles for intro screens -->
     <style name="header">
-        <item name="android:textSize">40sp</item>
+        <item name="android:textSize">36sp</item>
         <item name="android:textStyle">bold</item>
         <item name="textAllCaps">true</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/colorYellowAccent</item>
+        <item name="android:layout_margin">10dp</item>
     </style>
 
     <style name="description">
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">#fff</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
 
     <style name="listItem">

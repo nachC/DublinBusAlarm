@@ -32,36 +32,50 @@
     <string name="settings_button">location settings</string>
     <string name="allow_button">allow location</string>
 
-    <!-- RoutesList -->
+    <!-- RoutesListScreen -->
     <string name="header_text">Routes might change during bank holidays, celebration periods, etc. You can find information in the Dublin Bus News tab on the main screen.</string>
     <string name="routelist_fragment_label">SELECT YOUR TRIP</string>
     <string name="title_activity_alarm_lock_screen">AlarmLockScreen</string>
+    <string name="origin"><b>Origin:</b> %s</string>
+    <string name="destination"><b>Destination:</b> %s</string>
+    <string name="num_of_stops"><b>Total stops:</b> %s</string>
+    <string name="add_fav_btn">add to favourites</string>
+    <string name="delete_fav_btn">delete favourite</string>
 
     <!-- AlarmLockScreenActivity -->
     <string name="stop_button">dismiss alarm</string>
     <string name="arrived_message">Arrived to Stop</string>
 
     <!-- MainScreenFragment -->
-    <string name="searchTab">search bus</string>
-    <string name="newsTab">dublin bus news</string>
+    <string name="searchTab">search</string>
+    <string name="newsTab">news</string>
+
+    <!-- SettingsFragment -->
+    <string name="distanceSliderDescription">Adjust the distance (in meters) from the stop at which you want the alarm to go off</string>
 
     <!-- App Intro -->
     <string name="intro_first_header">Welcome</string>
     <string name="intro_first_description">Dublin Bus Alarm will make your trips more comfortable and relaxed by letting you know when you arrive at your destination.</string>
-    <string name="intro_first_description2">When you\'re 100 meters away from the stop, DBA will set off an alarm to let you know!</string>
+    <string name="intro_first_description2">When you\'re close to the stop, DBA will set off an alarm to let you know!</string>
     <string name="search_list_item">1. Search a route</string>
     <string name="trips_direction_list_item">2. Choose trip\'s direction</string>
     <string name="select_stop_list_item">3. Select a stop</string>
 
     <string name="intro_second_header">Location</string>
     <string name="intro_second_description">"In order for DBA to do its job, it needs to know your location. It will be used to display your position on the map and know when you've arrived at your destination.
-        \n\nPlease, accept the location permission request on the next screen."</string>
+        \nPlease, accept the location permission request on the next screen."</string>
 
-    <string name="intro_third_header">Battery optimizations</string>
+    <string name="intro_third_header">Almost there!</string>
     <string name="intro_third_description">Some device manufacturers implement their own battery optimizations
         that can prevent the alarm from ringing.\n\n
         DBA can\'t detect these proprietary settings, so it\'s recommended that you
 test the alarm to make sure everything is OK.\n
-You\'ll be able to test the alarm on the main screen.
+You\'ll be able to test the alarm on the Settings tab.
     </string>
+
+    <!-- images -->
+    <string name="busStopBGContentDescription">bus stop background</string>
+    <string name="locationIntroContentDescription">location drawing</string>
+    <string name="alarmIntroContentDescription">alarm drawing</string>
+
 </resources>

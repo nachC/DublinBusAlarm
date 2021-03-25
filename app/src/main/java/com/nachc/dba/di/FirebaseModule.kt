@@ -23,5 +23,4 @@ open class FirebaseModule {
     fun provideSessionRepository(): SessionRepository {
         return SessionRepository()
     }
-
 }

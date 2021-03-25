@@ -18,7 +18,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
@@ -32,10 +31,7 @@ import com.nachc.dba.R
 import com.nachc.dba.models.Session
 import com.nachc.dba.models.Trip
 import com.nachc.dba.receivers.AlarmReceiver
-import com.nachc.dba.util.drawPolylines
-import com.nachc.dba.util.drawStopMarkers
-import com.nachc.dba.util.startAlarm
-import com.nachc.dba.util.startLocationService
+import com.nachc.dba.util.*
 import java.util.*
 
 @SuppressLint("MissingPermission")
@@ -45,14 +41,14 @@ class MapsFragment : Fragment() {
     private val FIRST_CAMERA_ZOOM = 13F
     private val MAX_ZOOM = 15F
     private val REQUEST_CHECK_SETTINGS = 526
-    private val TRIGGER_DISTANCE_TO_STOP = 100F
     private val ALARM_DELAY = 500
     private val NOTIFICATION_DISMISS = "dismiss"
 
+    private var TRIGGER_DISTANCE_TO_STOP: Float = 100f
+
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
-
-    private val viewModel: MapsViewModel by viewModels()
+    private lateinit var sharedPref: SharedPreferencesHelper
 
     // session variables to write to DB
     private var sessionUserOriginCoords = ArrayList<Double>()
@@ -159,6 +155,7 @@ class MapsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        sharedPref = SharedPreferencesHelper(requireContext())
         return inflater.inflate(R.layout.fragment_maps, container, false)
     }
 
@@ -172,6 +169,8 @@ class MapsFragment : Fragment() {
         arguments.let {
             trip = MapsFragmentArgs.fromBundle(it!!).trip
         }
+
+        TRIGGER_DISTANCE_TO_STOP = sharedPref.getTriggerDistToStopFromSettings()
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
@@ -235,14 +234,14 @@ class MapsFragment : Fragment() {
     }
 
     private fun createLocationRequest() {
-        val locationRequest = LocationRequest.create()?.apply {
+        val locationRequest = LocationRequest.create().apply {
             interval = 3000
             fastestInterval = 1000
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
 
         val builder = LocationSettingsRequest.Builder()
-            .addLocationRequest(locationRequest!!)
+            .addLocationRequest(locationRequest)
 
         val client: SettingsClient = LocationServices.getSettingsClient(requireActivity())
         val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
@@ -269,7 +268,7 @@ class MapsFragment : Fragment() {
                         REQUEST_CHECK_SETTINGS
                     )
                 } catch (sendEx: IntentSender.SendIntentException) {
-                    Log.e(TAG, sendEx.message)
+                    Log.e(TAG, sendEx.message!!)
                 }
             }
         }
